@@ -1,0 +1,88 @@
+Template for azurerm https://github.com/hashicorp/terraform-provider-azurerm
+
+Stacksimplify: https://github.com/stacksimplify/hashicorp-certified-terraform-associate-on-azure/tree/main/05-Terraform-Provider-Resource-Block-Basics
+
+Good tutorial for checking (do last):
+https://youtu.be/V53AHWun17s
+
+-----------
+https://chat.openai.com/g/g-pDLabuKvD-terraform-guide/c/4a404111-2df7-4764-af5a-4cf1ef0deca5
+
+Project Structure Overview
+terraform-project/
+.
+├── main/                          # Main configurations and orchestration
+│   ├── provider.tf                # Provider configuration, previously in main.tf
+│   ├── backend.tf                 # Backend configuration for state storage
+│   ├── variables.tf               # Definitions of variables for the project
+│   ├── outputs.tf                 # Outputs from the modules
+│   └── terraform.tfvars           # Default variable values
+│
+├── infrastructure/                # Networking and foundational infrastructure
+│   ├── vnet.tf                    # Virtual Network configuration
+│   ├── subnets.tf                 # Subnet configurations for each layer
+│   └── nsg.tf                     # Network Security Group rules
+│
+├── app/                           # Application layer configurations
+│   ├── vmss_app.tf                # VMSS for the application layer, renamed for clarity
+│   └── nsg_app.tf                 # NSG rules specific to the application layer
+│
+├── database/                      # Database configurations
+│   └── sql_database.tf            # Azure SQL or Cosmos DB setup
+│
+└── web/                           # Front-end layer configurations
+    ├── vmss_web.tf                # VMSS for the front-end web servers, renamed for clarity
+    └── nsg_web.tf                 # NSG rules for the front-end layer
+
+How They Relate
+The main directory serves as the foundation, establishing the connection to Azure and managing global configurations like state storage and variable definitions. 
+It sets the stage for deploying and managing the resources defined in the other directories.
+
+The infrastructure, app, database, and web directories build upon this foundation, each focusing on a specific aspect of your overall architecture. 
+The infrastructure directory lays down the networking groundwork, while app, database, and web deploy the resources needed for each layer of your application, 
+from data storage to business logic to the user interface.
+
+These configurations are modular, meaning changes in one area, such as adding a new subnet in infrastructure/subnets.tf, 
+can be done independently but still integrated seamlessly with the rest of your infrastructure. 
+This modularity, combined with the use of variables and outputs, allows for flexible, scalable, and maintainable infrastructure management.
+----------------
+
+Main Configuration
+Location: main/
+
+provider.tf: This file configures the Terraform providers you're using - in this case, Azure. It specifies provider settings such as version requirements and features. The provider is essentially the bridge between Terraform and Azure, allowing Terraform to deploy and manage resources in your Azure subscription.
+
+backend.tf: Defines where and how Terraform's state file will be stored. For Azure, this typically means using an Azure Storage Account. This is crucial for managing the state of your infrastructure in a secure, centralized manner, enabling collaboration and state locking.
+
+variables.tf: Declares variables used across your Terraform configurations. Variables enhance modularity and reusability by allowing you to parameterize your configurations. This means you can easily adjust your infrastructure without altering the core Terraform files.
+
+outputs.tf: Specifies output values that you can use to retrieve information about your resources once Terraform has applied your configurations. Outputs can be useful for understanding resource attributes, such as IP addresses, or for feeding information into other Terraform configurations or external tools.
+
+terraform.tfvars: Provides default values for the declared variables. This file is particularly handy for setting environment-specific configurations, allowing you to keep your Terraform code generic and reusable across different environments or projects.
+--
+Infrastructure
+Location: infrastructure/
+
+vnet.tf: Sets up the Virtual Network (VNet) in Azure. The VNet is the fundamental building block for your network in Azure, providing isolation and segmentation for your resources.
+
+subnets.tf: Defines subnets within your VNet. Subnets allow you to partition your VNet into smaller segments, providing a way to allocate IP addresses in groups and apply specific network security policies.
+
+nsg.tf: Configures Network Security Groups (NSG). NSGs are used to define inbound and outbound security rules that control traffic to and from resources in your subnets, enhancing the security posture of your network.
+--
+Application Layer
+Location: app/
+
+vmss_app.tf: Deploys a Virtual Machine Scale Set (VMSS) for your application layer. VMSS allows you to create and manage a group of identical, load-balanced VMs, providing high availability and scalability for your application.
+
+nsg_app.tf: Specifies Network Security Group rules tailored to the application layer. These rules define the allowed and denied traffic for your application VMs, ensuring that only legitimate traffic can reach your application.
+--
+Database
+Location: database/
+
+sql_database.tf: Manages the database services, such as Azure SQL Database or Cosmos DB instances. This configuration handles the deployment and configuration of your databases, which store and manage the data used by your applications.
+Web Front-end
+Location: web/
+
+vmss_web.tf: Creates a Virtual Machine Scale Set for your front-end web servers. This setup is similar to the application layer but specifically tailored for serving the web front-end of your application, handling incoming web traffic.
+
+nsg_web.tf: Implements Network Security Group rules for the web front-end layer. These rules are designed to secure your web servers, ensuring that only web traffic (typically HTTP/HTTPS) is allowed, and unwanted traffic is blocked.
