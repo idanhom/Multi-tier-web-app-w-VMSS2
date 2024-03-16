@@ -21,7 +21,7 @@ variable "resource_group_location" {
   default     = "northeurope"
   description = "Resource Group Location"
   validation {
-    condition = var.resource_group_location == "northeurope" || var.resource_group_location == "sweden"
+    condition     = var.resource_group_location == "northeurope" || var.resource_group_location == "sweden"
     error_message = "Only resource in northeurope or sweden can be created"
   }
 }

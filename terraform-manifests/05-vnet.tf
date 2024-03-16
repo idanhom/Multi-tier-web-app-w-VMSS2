@@ -6,21 +6,21 @@ resource "azurerm_virtual_network" "myvnet" {
 }
 
 resource "azurerm_subnet" "mysubnet" {
-  name                 = "mysubnet-1"
+  name                 = "${var.business_unit}-${var.virtual_network_name}-mysubnet"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.myvnet.name
   address_prefixes     = ["10.0.1.0/24"]
 }
 
 resource "azurerm_public_ip" "mypublicip" {
-  name                = "mypublicip-1"
+  name                = "${var.business_unit}-${var.virtual_network_name}-mypublicip"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
 }
 
 resource "azurerm_network_interface" "myvmnic" {
-  name                = "vmnic"
+  name                = "${var.business_unit}-${var.virtual_network_name}-myvmnic"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
