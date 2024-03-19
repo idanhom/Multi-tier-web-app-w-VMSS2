@@ -26,9 +26,3 @@ variable "resource_group_location" {
   }
 }
 
-variable "virtual_network_name" {
-  description = "Virtual Network Name"
-  type        = string
-  default     = "myvnet"
-}
-

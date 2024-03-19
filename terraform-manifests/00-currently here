@@ -1,33 +1,19 @@
-#todo now, fix so that the locals for nsg is not hard-coded, like currently, because i will create more tiers, with other ports... (app, database, etc. so using the following formula is better...)
+# todo now, 
+fix this:
+│ Error: Reference to undeclared resource
+│ 
+│   on 05-2-web-subnet.tf line 9, in resource "azurerm_network_security_group" "web_subnet_nsg":
+│    9:   name                = "${azurerm_subnet.websubnet.name}-nsg"
+│ 
+│ A managed resource "azurerm_subnet" "websubnet" has not been declared in the root module.
 
-locals {
-  app_inbound_ports_map = {
-    "100" : "80", # If the key starts with a number, you must use the colon syntax ":" instead of "="
-    "110" : "443",
-    "120" : "8080",
-    "130" : "22"
-  } 
-}
-## NSG Inbound Rule for AppTier Subnets
-resource "azurerm_network_security_rule" "app_nsg_rule_inbound" {
-  for_each = local.app_inbound_ports_map
-  name                        = "Rule-Port-${each.value}"
-  priority                    = each.key
-  direction                   = "Inbound"
-  access                      = "Allow"
-  protocol                    = "Tcp"
-  source_port_range           = "*"
-  destination_port_range      = each.value 
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
-  resource_group_name         = azurerm_resource_group.rg.name
-  network_security_group_name = azurerm_network_security_group.app_subnet_nsg.name
-}
+# fix app subnet and nsg (copy most template from subnet and fix with appsubnet). add another locals for ports...
+
 
 
 # what i'm currently using: 
 terraform-on-azure-cloud
-https://github.com/stacksimplify/terraform-on-azure-cloud/tree/main/10-Azure-Virtual-Network-4Tier
+https://github.com/stacksimplify/terraform-on-azure-cloud/blob/main/11-Azure-Linux-Virtual-Machine/terraform-manifests/c6-04-app-subnet-and-nsg.tf
 #----------------
 hashicorp-certified-terraform-associate-on-azure
 https://github.com/stacksimplify/hashicorp-certified-terraform-associate-on-azure/tree/main/36-Terraform-Conditional-Expressions
