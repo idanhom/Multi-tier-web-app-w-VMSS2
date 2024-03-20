@@ -1,4 +1,4 @@
-# Datasources
+# Datasource rg
 data "azurerm_resource_group" "rgds" {
   depends_on = [azurerm_resource_group.rg]
   name       = local.rg_name
