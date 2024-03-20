@@ -1,13 +1,30 @@
 # todo now, 
-fix this:
-│ Error: Reference to undeclared resource
-│ 
-│   on 05-2-web-subnet.tf line 9, in resource "azurerm_network_security_group" "web_subnet_nsg":
-│    9:   name                = "${azurerm_subnet.websubnet.name}-nsg"
-│ 
-│ A managed resource "azurerm_subnet" "websubnet" has not been declared in the root module.
+fix with vms (vmss, actually)
 
-# fix app subnet and nsg (copy most template from subnet and fix with appsubnet). add another locals for ports...
+from comment way earlier
+# # these things should be placed at another place, and changed accordingly
+# resource "azurerm_public_ip" "mypublicip" {
+#   name                = "${var.business_unit}-${var.virtual_network_name}-mypublicip"
+#   resource_group_name = azurerm_resource_group.rg.name
+#   location            = azurerm_resource_group.rg.location
+#   allocation_method   = "Static"
+# }
+
+# resource "azurerm_network_interface" "myvmnic" {
+#   name                = "${var.business_unit}-${var.virtual_network_name}-myvmnic"
+#   location            = azurerm_resource_group.rg.location
+#   resource_group_name = azurerm_resource_group.rg.name
+
+#   ip_configuration {
+#     name                          = "internal"
+#     subnet_id                     = azurerm_subnet.mysubnet.id
+#     private_ip_address_allocation = "Dynamic"
+#     public_ip_address_id          = azurerm_public_ip.mypublicip.id
+#   }
+# }
+
+
+
 
 
 
