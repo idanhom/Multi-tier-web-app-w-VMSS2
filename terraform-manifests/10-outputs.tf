@@ -10,7 +10,8 @@ output "resource_group_name" {
 }
 
 output "ds_rg_location" {
-  value = data.azurerm_resource_group.rgds.location
+  description = "Location of the Resource Group"
+  value       = data.azurerm_resource_group.rgds.location
 }
 
 # Output Virtual Network
@@ -20,22 +21,26 @@ output "virtual_network_name" {
 }
 
 output "ds_vnet_address_space" {
-  value = data.azurerm_virtual_network.vnetds.address_space
+  description = "Address Space of the Virtual Network"
+  value       = data.azurerm_virtual_network.vnetds.address_space
 }
 
 # Subscription
 
 # 1. My Current Subscription Display Name
 output "current_subscription_display_name" {
-  value = data.azurerm_subscription.current.display_name
+  description = "Display Name of the Current Azure Subscription"
+  value       = data.azurerm_subscription.current.display_name
 }
 
 # 2. My Current Subscription Id
 output "current_subscription_id" {
-  value = data.azurerm_subscription.current.subscription_id
+  description = "ID of the Current Azure Subscription"
+  value       = data.azurerm_subscription.current.subscription_id
 }
 
 # 3. My Current Subscription Spending Limit
 output "current_subscription_spending_limit" {
-  value = data.azurerm_subscription.current.spending_limit
+  description = "Spending Limit of the Current Azure Subscription"
+  value       = data.azurerm_subscription.current.spending_limit
 }
