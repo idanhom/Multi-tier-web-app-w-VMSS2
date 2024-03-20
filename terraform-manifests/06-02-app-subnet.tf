@@ -1,28 +1,28 @@
-resource "azurerm_subnet" "mysubnet" {
-  name                 = "${var.business_unit}-${var.virtual_network_name}-mysubnet"
+resource "azurerm_subnet" "appsubnet" {
+  name                 = "${var.business_unit}-${var.virtual_network_name}-appsubnet"
   resource_group_name  = azurerm_resource_group.rg.name
-  virtual_network_name = azurerm_virtual_network.myvnet.name
-  address_prefixes     = ["10.0.1.0/24"]
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = var.app_subnet_address
 }
 
-resource "azurerm_network_security_group" "web_subnet_nsg" {
-  name                = "${azurerm_subnet.websubnet.name}-nsg"
+resource "azurerm_network_security_group" "appsubnet_nsg" {
+  name                = "${azurerm_subnet.appsubnet.name}-nsg"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 }
 
 
-resource "azurerm_subnet_network_security_group_association" "web_subnet_nsg" {
-  depends_on                = [azurerm_network_security_rule.web_nsg_rule_inbound]
-  subnet_id                 = azurerm_subnet.mysubnet.id
-  network_security_group_id = azurerm_network_security_group.web_subnet_nsg.id
+resource "azurerm_subnet_network_security_group_association" "appsubnet_nsg" {
+  depends_on                = [azurerm_network_security_rule.app_nsg_rule_inbound]
+  subnet_id                 = azurerm_subnet.appsubnet.id
+  network_security_group_id = azurerm_network_security_group.appsubnet_nsg.id
 }
 
 
-resource "azurerm_network_security_rule" "web_nsg_rule_inbound" {
-  for_each                    = local.web_inbound_ports_map
+resource "azurerm_network_security_rule" "app_nsg_rule_inbound" {
+  for_each                    = local.app_inbound_ports_map
   resource_group_name         = azurerm_resource_group.rg.name
-  network_security_group_name = azurerm_network_security_group.web_subnet_nsg.name
+  network_security_group_name = azurerm_network_security_group.appsubnet_nsg.name
   name                        = "Rule-Port-${each.value}"
   priority                    = each.key
   direction                   = "Inbound"

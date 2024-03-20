@@ -17,4 +17,9 @@ variable "web_subnet_address" {
   default     = ["10.0.1.0/24"]
 }
 
-# also add app,db, address space
+# App Subnet Address Space
+variable "app_subnet_address" {
+  description = "Virtual Network App Subnet Address Spaces"
+  type = list(string)
+  default = ["10.0.11.0/24"]
+}

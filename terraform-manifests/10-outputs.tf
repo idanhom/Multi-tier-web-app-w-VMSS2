@@ -11,7 +11,7 @@ output "resource_group_name" {
 # Output Virtual Network
 output "virtual_network_name" {
   description = "Virutal Network Name"
-  value       = azurerm_virtual_network.myvnet.id
+  value       = azurerm_virtual_network.vnet.id
 }
 # ------------------------
 # From 06-datasource, rg
