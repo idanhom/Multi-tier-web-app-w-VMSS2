@@ -1,4 +1,6 @@
 # todo now, 
+read up on the folders... because i must understand with the app1/app2 vmss... and how they relate to what i'm doing. start with doing the re-read on the load-balancer, go through the code, understand it, then go forward until i know my path...
+
 fix with vms (vmss, actually)
 
 from comment way earlier
@@ -27,7 +29,7 @@ from comment way earlier
 
 # what i'm currently using: 
 terraform-on-azure-cloud
-https://github.com/stacksimplify/terraform-on-azure-cloud/blob/main/11-Azure-Linux-Virtual-Machine/terraform-manifests/c7-02-web-linuxvm-publicip.tf
+https://github.com/stacksimplify/terraform-on-azure-cloud/tree/main/14-Azure-Standard-LoadBalancer-Basic
 
 
 
