@@ -1,16 +1,16 @@
 # todo now, 
-read up on the folders... because i must understand with the app1/app2 vmss... and how they relate to what i'm doing. start with doing the re-read on the load-balancer, go through the code, understand it, then go forward until i know my path...
+currently, trying to host my resume on blob storage and link to it
+https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts
 
-fix with vms (vmss, actually)
+G:\My Drive\Drive\Jobb\CV\ansökningar\Terraform, Redeploy
 
-from comment way earlier
 
 
 
 
 # what i'm currently using: 
 terraform-on-azure-cloud
-https://github.com/stacksimplify/terraform-on-azure-cloud/tree/main/14-Azure-Standard-LoadBalancer-Basic
+https://github.com/stacksimplify/terraform-on-azure-cloud/tree/main/11-Azure-Linux-Virtual-Machine
 
 
 
