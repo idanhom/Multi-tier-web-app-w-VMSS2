@@ -1,4 +1,4 @@
-resource "azurerm_network_interface" "web_linux_nic" {
+resource "azurerm_network_interface" "web_linuxvm_nic" {
   name                = "${var.business_unit}-${var.virtual_network_name}-vmnic"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
@@ -9,5 +9,4 @@ resource "azurerm_network_interface" "web_linux_nic" {
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.publicip.id
   }
-  
 }

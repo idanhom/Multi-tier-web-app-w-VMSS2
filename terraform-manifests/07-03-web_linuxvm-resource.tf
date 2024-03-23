@@ -1,7 +1,6 @@
-# Locals Block for custom data
 locals {
   webvm_custom_data = <<CUSTOM_DATA
-#!/bin/sh
+#!/bin/bash
 # Update system packages
 sudo yum update -y
 
@@ -12,31 +11,19 @@ sudo yum install -y httpd
 sudo systemctl enable httpd
 sudo systemctl start httpd
 
-# Disable and stop the firewalld (Consider configuring it properly for production)
-sudo systemctl stop firewalld
-sudo systemctl disable firewalld
-
-# Set proper permissions (Consider more restrictive permissions for production)
-sudo chown apache:apache /var/www/html
-sudo chmod -R 755 /var/www/html
-
-# Create an index.html file for your resume
+# Create an index.html file
 cat <<EOF > /var/www/html/index.html
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Emil's Resume</title>
+    <title>Oscars Resume</title>
 </head>
 <body>
     <h1>Hej Emil!</h1>
-    <p>Welcome to my online resume.</p>
-    <h2>About Me</h2>
-    <p>[Your About Me content]</p>
-    <h2>Experience</h2>
-    <p>[Your Experience content]</p>
-    <h2>Contact</h2>
-    <p>Email: [Your email]</p>
-    <p>Phone: [Your phone number]</p>
+    <object data="Oscar_Pettersson.pdf" type="application/pdf" width="100%" height="100%">
+        <p>Your browser does not support PDFs.
+        <a href="Oscar_Pettersson.pdf">Download the PDF</a>.</p>
+    </object>
 </body>
 </html>
 EOF
@@ -45,6 +32,7 @@ EOF
 sudo systemctl restart httpd
 CUSTOM_DATA
 }
+
 
 
 
@@ -58,7 +46,7 @@ resource "azurerm_linux_virtual_machine" "web_linuxvm" {
   network_interface_ids = [ azurerm_network_interface.web_linuxvm_nic.id ]
   admin_ssh_key {
     username = "azureuser"
-    public_key = file("${path.module}/ssh-keys/terraform-azure.pub")
+    public_key = file("${path.module}/.ssh/terraform-azure.pub")
   }
   os_disk {
     caching = "ReadWrite"
@@ -70,6 +58,6 @@ resource "azurerm_linux_virtual_machine" "web_linuxvm" {
     sku = "83-gen2"
     version = "latest"
   }  
-  #custom_data = filebase64("${path.module}/app-scripts/redhat-webvm-script.sh")
+
   custom_data = base64encode(local.webvm_custom_data)
 }

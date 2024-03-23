@@ -12,7 +12,7 @@ variable "environment" {
 
 variable "resource_group_name" {
   type        = string
-  default     = "myrg"
+  default     = "rg"
   description = "Resource Group Name"
 }
 
