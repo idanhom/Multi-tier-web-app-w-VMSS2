@@ -1,6 +1,7 @@
 # todo now, 
-currently, trying to host my resume on blob storage and link to it
-https://portal.azure.com/#view/HubsExtension/BrowseResource/resourceType/Microsoft.Storage%2FStorageAccounts
+recreate my .pem and pub files
+current problem, want to be able to ssh into my vm to check the pdf
+also, want to have the vm host my pdf, currently i have no website hoste although i have a script. check the script provided 
 
 G:\My Drive\Drive\Jobb\CV\ansökningar\Terraform, Redeploy
 
