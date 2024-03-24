@@ -17,3 +17,8 @@ output "current_subscription_spending_limit" {
   description = "Spending Limit of the Current Azure Subscription"
   value       = data.azurerm_subscription.current.spending_limit
 }
+
+output "public_ip_address" {
+  description = "Public IP of web-linuxvm"
+  value = azurerm_public_ip.publicip.ip_address
+}
