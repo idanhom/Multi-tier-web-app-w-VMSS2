@@ -7,7 +7,7 @@ data "azurerm_resource_group" "rgds" {
 # Datasources
 data "azurerm_virtual_network" "vnetds" {
   depends_on          = [azurerm_virtual_network.vnet]
-  name                = local.vnet_name
+  name                = "${local.vnet_name}-vnet"
   resource_group_name = local.rg_name
 }
 
