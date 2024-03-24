@@ -1,5 +1,5 @@
 resource "azurerm_subnet" "appsubnet" {
-  name                 = "${var.business_unit}-${var.virtual_network_name}-appsubnet"
+  name                 = "${var.business_unit}-appsubnet"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = var.app_subnet_address
