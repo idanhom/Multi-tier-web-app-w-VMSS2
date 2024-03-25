@@ -1,9 +1,6 @@
 locals {
   webvm_custom_data = <<CUSTOM_DATA
-#!/bin/bash
-# Update system packages
-sudo yum update -y
-
+#!/bin/sh
 # Install Apache web server
 sudo yum install -y httpd
 
@@ -11,22 +8,28 @@ sudo yum install -y httpd
 sudo systemctl enable httpd
 sudo systemctl start httpd
 
-# Create an index.html file
-cat <<EOF > /var/www/html/index.html
-<!DOCTYPE html>
+# Stop and disable the firewall to ensure web server accessibility
+sudo systemctl stop firewalld
+sudo systemctl disable firewalld
+
+# Set permissive permissions on the web root to avoid permission issues
+sudo chmod -R 777 /var/www/html
+
+# Create an index.html file with a message and a link to the resume
+sudo echo '<!DOCTYPE html>
 <html>
 <head>
     <title>Oscars Resume</title>
 </head>
 <body>
     <h1>Hej Emil!</h1>
-    <object data="Oscar_Pettersson.pdf" type="application/pdf" width="100%" height="100%">
-        <p>Your browser does not support PDFs.
-        <a href="Oscar_Pettersson.pdf">Download the PDF</a>.</p>
-    </object>
+    <p>Click below to download Oscar's Resume</p>
+    <a href="Oscar_Pettersson.pdf">Download Resume</a>
 </body>
-</html>
-EOF
+</html>' | sudo tee /var/www/html/index.html
+
+# Assuming Oscar_Pettersson.pdf is already uploaded to /var/www/html
+# If not, consider adding a file provisioner to upload the PDF
 
 # Restart Apache to apply changes
 sudo systemctl restart httpd
