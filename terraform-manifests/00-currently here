@@ -1,8 +1,12 @@
 # todo now, 
-fixa load balancer
-https://github.com/stacksimplify/terraform-on-azure-cloud/tree/main/14-Azure-Standard-LoadBalancer-Basic
+vid apply -auto-approve, problem med "host" för null resource...
 
-
+samt... vid apply, verkar också problem med detta:
+│ Error: A resource with the ID "/subscriptions/0d269d60-87e0-4f5d-8744-263a1dae8f3a/resourceGroups/hr-dev-rg" already exists - to be managed via Terraform this resource needs to be imported into the State. Please see the resource documentation for "azurerm_resource_group" for more information.
+│ 
+│   with azurerm_resource_group.rg,
+│   on 04-01-resource_group.tf line 1, in resource "azurerm_resource_group" "rg":
+│    1: resource "azurerm_resource_group" "rg" {
 
 
 # what i'm currently using: 
