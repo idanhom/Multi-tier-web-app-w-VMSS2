@@ -16,20 +16,19 @@ sudo systemctl disable firewalld
 sudo chmod -R 777 /var/www/html
 
 # Create an index.html file with a message and a link to the resume
-sudo echo '<!DOCTYPE html>
+cat <<EOF | sudo tee /var/www/html/index.html
+<!DOCTYPE html>
 <html>
 <head>
     <title>Oscars Resume</title>
 </head>
 <body>
     <h1>Hej Emil!</h1>
-    <p>Click below to download Oscar's Resume</p>
-    <a href="Oscar_Pettersson.pdf">Download Resume</a>
+    <p>Klicka nedan för att ladda ner CV</p>
+    <a href="Oscar_Pettersson.pdf">Ladda ner CV</a>
 </body>
-</html>' | sudo tee /var/www/html/index.html
-
-# Assuming Oscar_Pettersson.pdf is already uploaded to /var/www/html
-# If not, consider adding a file provisioner to upload the PDF
+</html>
+EOF
 
 # Restart Apache to apply changes
 sudo systemctl restart httpd
