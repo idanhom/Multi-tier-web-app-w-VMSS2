@@ -1,6 +1,12 @@
 # todo now, 
-
-
+when deploying:
+│ Error: file provisioner error
+│ 
+│   with azurerm_linux_virtual_machine.web_linuxvm,
+│   on 07-03-web_linuxvm-resource.tf line 67, in resource "azurerm_linux_virtual_machine" "web_linuxvm":
+│   67:   provisioner "file" {
+│ 
+│ host for provisioner cannot be empty
 
 # what i'm currently using: 
 terraform-on-azure-cloud
