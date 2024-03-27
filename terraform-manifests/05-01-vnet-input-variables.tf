@@ -20,13 +20,13 @@ variable "web_subnet_address" {
 # App Subnet Address Space
 variable "app_subnet_address" {
   description = "Virtual Network App Subnet Address Spaces"
-  type = list(string)
-  default = ["10.0.2.0/24"]
+  type        = list(string)
+  default     = ["10.0.2.0/24"]
 }
 
 # Database Subnet Address Space
 variable "db_subnet_address" {
   description = "Virtual Network Database Subnet Address Spaces"
-  type = list(string)
-  default = ["10.0.3.0/24"]
+  type        = list(string)
+  default     = ["10.0.3.0/24"]
 }
