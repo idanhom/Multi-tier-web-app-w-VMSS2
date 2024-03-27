@@ -1,12 +1,16 @@
 # todo now, 
 when deploying:
-│ Error: file provisioner error
+
+│ Error: updating Network Interface (Subscription: "0d269d60-87e0-4f5d-8744-263a1dae8f3a"
+│ Resource Group Name: "hr-dev-rg"
+│ Network Interface Name: "hr-dev-web-linuxvm-nic"): performing CreateOrUpdate: unexpected status 400 with error: PublicIPAddressInUse: Resource /subscriptions/0d269d60-87e0-4f5d-8744-263a1dae8f3a/resourceGroups/hr-dev-rg/providers/Microsoft.Network/networkInterfaces/hr-dev-web-linuxvm-nic/ipConfigurations/web-linuxvm-ip-1 is referencing public IP address /subscriptions/0d269d60-87e0-4f5d-8744-263a1dae8f3a/resourceGroups/hr-dev-rg/providers/Microsoft.Network/publicIPAddresses/hr-dev-lb-public-ip that is already allocated to resource /subscriptions/0d269d60-87e0-4f5d-8744-263a1dae8f3a/resourceGroups/hr-dev-rg/providers/Microsoft.Network/loadBalancers/hr-dev-web-lb/frontendIPConfigurations/web-lb-publicip-1.
 │ 
-│   with azurerm_linux_virtual_machine.web_linuxvm,
-│   on 07-03-web_linuxvm-resource.tf line 67, in resource "azurerm_linux_virtual_machine" "web_linuxvm":
-│   67:   provisioner "file" {
+│   with azurerm_network_interface.web_linuxvm_nic,
+│   on 07-02-web_linuxvm-nic.tf line 1, in resource "azurerm_network_interface" "web_linuxvm_nic":
+│    1: resource "azurerm_network_interface" "web_linuxvm_nic" {
 │ 
-│ host for provisioner cannot be empty
+
+i have now added a new IP that the null resource uses instead of the lb. this seems to have removed the need for "host". however now this issue came, have not looked it over.
 
 # what i'm currently using: 
 terraform-on-azure-cloud
