@@ -43,9 +43,3 @@ resource "azurerm_linux_virtual_machine" "jumpbox_vm" {
     version   = "latest"
   }
 }
-
-
-
-
-
-# publicip_null_resource
