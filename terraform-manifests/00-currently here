@@ -12,6 +12,7 @@ i should ask gpt for advice. using a "two tier" architecture or using the jump-o
     i do want to make sure i'm using load balancer for web and app (possibly what might be file hosting)
         so i also can use vmss (for when many are accessing my website and files there)
 
+https://chat.openai.com/g/g-pDLabuKvD-terraform-guide/c/9aab51f9-836f-42a5-bd3f-e04058f5ed40
 
 
 # what i'm currently using: 
