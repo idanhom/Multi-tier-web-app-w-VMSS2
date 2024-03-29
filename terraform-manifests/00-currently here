@@ -1,16 +1,18 @@
 # todo now, 
-when deploying:
+i have now successfully deployed the website. i'm using a jump off box. however i cannot download the resumé.
+currently troubleshooting this. 
 
-│ Error: updating Network Interface (Subscription: "0d269d60-87e0-4f5d-8744-263a1dae8f3a"
-│ Resource Group Name: "hr-dev-rg"
-│ Network Interface Name: "hr-dev-web-linuxvm-nic"): performing CreateOrUpdate: unexpected status 400 with error: PublicIPAddressInUse: Resource /subscriptions/0d269d60-87e0-4f5d-8744-263a1dae8f3a/resourceGroups/hr-dev-rg/providers/Microsoft.Network/networkInterfaces/hr-dev-web-linuxvm-nic/ipConfigurations/web-linuxvm-ip-1 is referencing public IP address /subscriptions/0d269d60-87e0-4f5d-8744-263a1dae8f3a/resourceGroups/hr-dev-rg/providers/Microsoft.Network/publicIPAddresses/hr-dev-lb-public-ip that is already allocated to resource /subscriptions/0d269d60-87e0-4f5d-8744-263a1dae8f3a/resourceGroups/hr-dev-rg/providers/Microsoft.Network/loadBalancers/hr-dev-web-lb/frontendIPConfigurations/web-lb-publicip-1.
-│ 
-│   with azurerm_network_interface.web_linuxvm_nic,
-│   on 07-02-web_linuxvm-nic.tf line 1, in resource "azurerm_network_interface" "web_linuxvm_nic":
-│    1: resource "azurerm_network_interface" "web_linuxvm_nic" {
-│ 
+when trying to ssh into my web vm, i get this error: "ssh: connect to host 52.178.164.204 port 22: Connection refused"
 
-i have now added a new IP that the null resource uses instead of the lb. this seems to have removed the need for "host". however now this issue came, have not looked it over.
+possibly, the reason for this is that the web vm is using a load balancer. perhaps, i need to have two vms
+    one for displaying the website and one for hosting the file. 
+        given this, what changes should i make to my current config?
+
+i should ask gpt for advice. using a "two tier" architecture or using the jump-off box?
+    i do want to make sure i'm using load balancer for web and app (possibly what might be file hosting)
+        so i also can use vmss (for when many are accessing my website and files there)
+
+
 
 # what i'm currently using: 
 terraform-on-azure-cloud
