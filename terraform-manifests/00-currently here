@@ -1,28 +1,23 @@
 # todo now, 
-i have now successfully deployed the website. i'm using a jump off box. however i cannot download the resumé.
-currently troubleshooting this. 
 
-when trying to ssh into my web vm, i get this error: "ssh: connect to host 52.178.164.204 port 22: Connection refused"
+possibly, the case is i only need one vmss, one load balancer
+and one jump off box (with own ip)
 
-possibly, the reason for this is that the web vm is using a load balancer. perhaps, i need to have two vms
-    one for displaying the website and one for hosting the file. 
-        given this, what changes should i make to my current config?
+then i just need to make sure it works as intended.
 
-i should ask gpt for advice. using a "two tier" architecture or using the jump-off box?
-    i do want to make sure i'm using load balancer for web and app (possibly what might be file hosting)
-        so i also can use vmss (for when many are accessing my website and files there)
+for this, first describe what i want to make happen
+then past my current (relevant) code
 
-now, see the text... go from there and create the 07-02
+then ask gpt to make changes accordingly
+
+(also, possibly, check why it's the case i cannot current ssh into the web vm, but only to the jump box)
 
 
 
-https://chat.openai.com/g/g-pDLabuKvD-terraform-guide/c/9aab51f9-836f-42a5-bd3f-e04058f5ed40
 
 
 # what i'm currently using: 
-terraform-on-azure-cloud
-https://github.com/stacksimplify/terraform-on-azure-cloud/tree/main/11-Azure-Linux-Virtual-Machine
-
+https://github.com/stacksimplify/terraform-on-azure-cloud/tree/main/20-Azure-External-and-Internal-LB-with-VMSS
 
 
 
