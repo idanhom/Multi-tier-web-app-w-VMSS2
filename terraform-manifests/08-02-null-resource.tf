@@ -7,7 +7,7 @@ resource "null_resource" "copy_files_to_vm" {
     type        = "ssh"
     user        = "azureuser"
     private_key = file("${path.module}/.ssh/terraform-azure.pem") # Ensure this is the path to your private key
-    host        = azurerm_public_ip.jumpbox_public_ip.ip_address
+    host        = azurerm_network_interface.app_linuxvm_nic.private_ip_address
   }
 
 

@@ -15,17 +15,16 @@ sudo systemctl disable firewalld
 # Set permissive permissions on the web root to avoid permission issues
 sudo chmod -R 777 /var/www/html
 
-# Create an index.html file with a message and a link to the resume
+# Create an index.html file for the website content
 cat <<EOF | sudo tee /var/www/html/index.html
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Oscars Resume</title>
+    <title>Oscar's Website</title>
 </head>
 <body>
-    <h1>Hej Emil!</h1>
-    <p>Klicka nedan för att ladda ner CV</p>
-    <a href="Oscar_Pettersson.pdf">Ladda ner CV</a>
+    <h1>Welcome to Oscar's Website!</h1>
+    <p>Explore the site to learn more about me.</p>
 </body>
 </html>
 EOF
@@ -34,6 +33,7 @@ EOF
 sudo systemctl restart httpd
 CUSTOM_DATA
 }
+
 
 
 # Public IP comes from LB

@@ -1,17 +1,5 @@
 # todo now, 
 
-possibly, the case is i only need one vmss, one load balancer
-and one jump off box (with own ip)
-
-then i just need to make sure it works as intended.
-
-for this, first describe what i want to make happen
-then past my current (relevant) code
-
-then ask gpt to make changes accordingly
-
-(also, possibly, check why it's the case i cannot current ssh into the web vm, but only to the jump box)
-
 
 
 
