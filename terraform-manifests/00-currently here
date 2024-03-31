@@ -1,33 +1,13 @@
 # todo now, 
+proceed via first making sure my null resource is a basitian host
+this bastian host should be the only vm to ssh into my web and app vm(ss)
 
-when i'm deploying the resouces it loops at remote-exec. this might be because issues with...
-The behavior you're experiencing with the null_resource.copy_files_to_vm using remote-exec provisioner suggests there's an issue establishing an SSH connection to the target VM. When Terraform repeatedly attempts to connect without success, it usually indicates one of the following problems:
 
-SSH Service Not Ready: The VM might not have fully initialized, and the SSH service isn't ready to accept connections. This can be due to the VM still booting up or custom data scripts still running.
+now, make so the web vm hosts the static website
+and the app vm hosts the cv, by storing and displaying it from the azure storage account (not from local computer)
 
-Network Configuration: The network configuration might be preventing access to the VM. This could be due to network security group (NSG) rules, the VM's firewall settings, or incorrect subnet configurations that prevent SSH access.
-
-Incorrect IP Address: The IP address used (10.0.2.4) might be incorrect, not assigned to the VM, or not reachable from the machine where Terraform is running. This could happen if the VM is in a different network segment or if there's a routing issue.
-
-Authentication Issues: There might be a problem with the SSH keys or credentials being used. Ensure that the private key (terraform-azure.pem) is correct, has the right permissions, and matches the public key installed on the VM.
-
-VM State: The VM might be in an unexpected state or not fully provisioned when the remote-exec provisioner tries to connect. This can be due to a previous error in the VM creation process or delays in Azure's provisioning process.
-
-Steps to Troubleshoot:
-Check VM State: Verify that the VM is in a running state in the Azure portal and that it has completed booting up. You can check this by reviewing the VM's boot diagnostics and serial logs.
-
-Review NSG Rules: Ensure the NSG associated with the VM's network interface or subnet allows inbound SSH traffic (port 22) from your IP address.
-
-Verify SSH Service: If possible, manually SSH into the VM using the same credentials and private key to ensure the SSH service is running and accessible.
-
-Inspect Custom Data Scripts: If you're using custom data scripts to configure the VM, ensure they complete successfully and don't interfere with the SSH service. Sometimes, scripts that take a long time to run or fail can cause issues with initial SSH access.
-
-Terraform Dependency Ordering: Ensure there's an explicit dependency that makes the null_resource.copy_files_to_vm wait until the VM is fully provisioned. You can use the depends_on attribute to enforce this if not already done.
-
-Private Key Permissions: Ensure the private key file used by Terraform has the correct permissions set (typically 400 or 600 on Unix/Linux systems).
-
-If after these checks the issue persists, you might consider adding more verbose logging to the SSH connection attempt to gain additional insights, or using a local-exec provisioner to run a script that checks for SSH availability before attempting file transfer.
-
+this also means that the current file provisioner from the null resource should only send the ssh key, and also with appropriate permissions
+  (and not the resumé)
 
 
 # what i'm currently using: 
