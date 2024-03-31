@@ -24,10 +24,10 @@ output "current_subscription_spending_limit" {
 #   value = azurerm_public_ip.publicip.ip_address
 # }
 
-# LB Public IP
+# web LB Public IP
 output "web_lb_public_ip_address" {
   description = "Web Load Balancer Public Address"
-  value       = azurerm_public_ip.publicip.ip_address
+  value       = azurerm_public_ip.web_publicip.ip_address
 }
 
 # Load Balancer ID
@@ -40,4 +40,11 @@ output "web_lb_id" {
 output "web_lb_frontend_ip_configuration" {
   description = "Web LB frontend_ip_configuration Block"
   value       = [azurerm_lb.web_lb.frontend_ip_configuration]
+}
+
+# app lb public ip
+
+output "app_lb_public_ip_address" {
+  description = "Web Load Balancer Public Address"
+  value       = azurerm_public_ip.app_publicip.ip_address
 }
