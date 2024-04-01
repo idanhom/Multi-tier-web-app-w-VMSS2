@@ -13,6 +13,12 @@ follow:
 C:\Users\pson9\Documents\github\terraform-on-azure-cloud\28-Azure-Application-Gateway-Path-Based-Routing
 
 
+---
+doing the above means to remove app subnet, for example...
+
+
+
+
 
 also, actually have the cv in local file but use "azurerm_storage_container" to upload it... see c10 in #20 on local terraform-on-azure-cloud on windows drive
 C:\Users\pson9\Documents\github\terraform-on-azure-cloud\20-Azure-External-and-Internal-LB-with-VMSS
