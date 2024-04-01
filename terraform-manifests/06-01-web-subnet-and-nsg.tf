@@ -35,4 +35,11 @@ resource "azurerm_network_security_rule" "web_nsg_rule_inbound" {
 }
 
 
-
+# Mapping of inbound ports for web tier - maps external ports to internal service ports
+locals {
+  web_inbound_ports_map = {
+    "100" : "80"  # HTTP
+    "110" : "443" # HTTPS
+    "120" : "22"  # SSH
+  }
+}

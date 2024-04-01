@@ -34,7 +34,15 @@ resource "azurerm_network_security_rule" "app_nsg_rule_inbound" {
   destination_address_prefix  = "*"
 }
 
-
+# Mapping of inbound ports for application tier - maps external ports to internal application ports
+locals {
+  app_inbound_ports_map = {
+    "100" : "80",   # HTTP
+    "110" : "443",  # HTTPS
+    "120" : "8080", # Alternative HTTP
+    "130" : "22"    # SSH
+  }
+}
 
 
 
