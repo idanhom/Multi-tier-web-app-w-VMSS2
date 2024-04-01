@@ -1,23 +1,19 @@
 # todo now, 
 
 i want to make so when i go to the web vm, it shows the website's static content
-when i instead go to the app ip, i can download the cv.
+  here, i should also be able to download the resumé.
+  for this, i need to make changes to path based routing, so depending on what i choose to do, it direct make sure there is not overload on website (no buffer)
+    load balancer, 
 
-however i want to make so that i'm using the path based routing using load balancer config.
-  in the static website, there should be a link to the cv which can be downloaded (and directed using the load balancer)
-
-
-
-for this, i need to follow this guide:
-https://github.com/stacksimplify/terraform-on-azure-cloud/tree/main/28-Azure-Application-Gateway-Path-Based-Routing
+however i want to make so that i'm using the path based routing, using application gateway, 
+so on the static website, there should be a link to the cv which can be downloaded (using application gateway)
 
 
-to use (and modify), load balancer (path based), vmss (for web and app linux), natGW
-
-
-here, note, also to use vmss, and natGW (which i currently don't understand how it works)
+follow: 
+C:\Users\pson9\Documents\github\terraform-on-azure-cloud\28-Azure-Application-Gateway-Path-Based-Routing
 
 
 
-
+also, actually have the cv in local file but use "azurerm_storage_container" to upload it... see c10 in #20 on local terraform-on-azure-cloud on windows drive
+C:\Users\pson9\Documents\github\terraform-on-azure-cloud\20-Azure-External-and-Internal-LB-with-VMSS
 
