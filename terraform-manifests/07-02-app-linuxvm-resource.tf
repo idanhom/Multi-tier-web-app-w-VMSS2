@@ -3,20 +3,24 @@
 locals {
   resume_vm_custom_data = <<EOF
 #!/bin/bash
-# Install Apache
-sudo yum install -y httpd
+# Install Apache and curl
+sudo yum install -y httpd curl
 # Start and enable Apache
 sudo systemctl start httpd
 sudo systemctl enable httpd
 # Disable the firewall
 sudo systemctl stop firewalld
 sudo systemctl disable firewalld
-# Create a placeholder HTML page for the resume
-echo '<!DOCTYPE html><html><head><title>Resume</title></head><body><h1>Resume will be available shortly.</h1></body></html>' | sudo tee /var/www/html/index.html
+# Download the resume PDF from Azure Blob Storage
+sudo curl -o /var/www/html/my_resume.pdf https://resumeoscar.blob.core.windows.net/resume/resume/Oscar_Pettersson.pdf
+# Create an HTML page to link to the PDF resume
+echo '<!DOCTYPE html><html><head><title>My Resume</title></head><body><h1>My Resume</h1><p>View my <a href="/my_resume.pdf">resume</a>.</p></body></html>' | sudo tee /var/www/html/index.html
 # Restart Apache to apply changes
 sudo systemctl restart httpd
 EOF
 }
+
+
 
 
 
