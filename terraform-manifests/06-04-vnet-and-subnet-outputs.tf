@@ -9,4 +9,4 @@ output "ds_vnet_address_space" {
   value       = data.azurerm_virtual_network.vnetds.address_space
 }
 
-# Här ska outputs för subnets in.
+# Här ska outputs för fler subnets in.
