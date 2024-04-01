@@ -1,32 +1,23 @@
 # todo now, 
-proceed via first making sure my null resource is a basitian host
-this bastian host should be the only vm to ssh into my web and app vm(ss)
 
+i want to make so when i go to the web vm, it shows the website's static content
+when i instead go to the app ip, i can download the cv.
 
-now, make so the web vm hosts the static website
-and the app vm hosts the cv, by storing and displaying it from the azure storage account (not from local computer)
-
-this also means that the current file provisioner from the null resource should only send the ssh key, and also with appropriate permissions
-  (and not the resumé)
-
-
-# what i'm currently using: 
-https://github.com/stacksimplify/terraform-on-azure-cloud/tree/main/20-Azure-External-and-Internal-LB-with-VMSS
+however i want to make so that i'm using the path based routing using load balancer config.
+  in the static website, there should be a link to the cv which can be downloaded (and directed using the load balancer)
 
 
 
-#----------------
-hashicorp-certified-terraform-associate-on-azure
-https://github.com/stacksimplify/hashicorp-certified-terraform-associate-on-azure/tree/main/36-Terraform-Conditional-Expressions
+for this, i need to follow this guide:
+https://github.com/stacksimplify/terraform-on-azure-cloud/tree/main/28-Azure-Application-Gateway-Path-Based-Routing
 
-#-----------
+
+to use (and modify), load balancer (path based), vmss (for web and app linux), natGW
+
+
+here, note, also to use vmss, and natGW (which i currently don't understand how it works)
 
 
 
 
 
----------------
-at the end, make sure to use concepts like 
--https://github.com/stacksimplify/hashicorp-certified-terraform-associate-on-azure/tree/main/28-Input-Variables-Sensitive
-
-instead of using the database config, use some ansible config instead for the vmss. or docker?

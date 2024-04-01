@@ -13,7 +13,7 @@ resource "azurerm_network_security_group" "bastionsubnet_nsg" {
 
 
 resource "azurerm_subnet_network_security_group_association" "bastionsubnet_nsg__associate" {
-  depends_on                = [azurerm_network_security_rule.db_nsg_rule_inbound]
+  depends_on                = [azurerm_network_security_rule.bastion_nsg_rule_inbound]
   subnet_id                 = azurerm_subnet.bastionsubnet.id
   network_security_group_id = azurerm_network_security_group.bastionsubnet_nsg.id
 }
