@@ -7,7 +7,7 @@ resource "null_resource" "copy_files_to_vm" {
     type        = "ssh"
     user        = "azureuser"
     private_key = file("${path.module}/.ssh/terraform-azure.pem")
-    host        = azurerm_network_interface.app_linuxvm_nic.private_ip_address
+    host        = azurerm_network_interface.web_linuxvm_nic.private_ip_address
   }
 
   provisioner "file" {

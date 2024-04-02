@@ -1,7 +1,6 @@
 # todo now, 
 
-my goal now is that the vm serves the static website
-and another path from the vm hosts the resume
+my goal now is that one vmss serves the static website and the resumé
 
 depending on where the user goes, either to the root
 or to the /resume path, the application gateway will direct the traffic to the appropriate backend pool
@@ -11,6 +10,18 @@ or to the /resume path, the application gateway will direct the traffic to the a
 follow: 
 C:\Users\pson9\Documents\github\terraform-on-azure-cloud\28-Azure-Application-Gateway-Path-Based-Routing
 
+
+
+for the webvm_custom_data, make sure i do not disable the firewall completely... instead, make sure i can only access the vm through the basion (and then include the ip of the bastion). 
+this is done in the nsg for web
+  
+/
+locals {
+ssh_source_address = "YOUR_IP_ADDRESS/32" # Replace with your IP address for SSH access
+}
+
+  source_address_prefix       = local.ssh_source_address
+/
 
 ---
 

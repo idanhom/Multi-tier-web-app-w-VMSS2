@@ -12,10 +12,16 @@ sudo systemctl start httpd
 sudo systemctl stop firewalld
 sudo systemctl disable firewalld
 
-# Set permissive permissions on the web root to avoid permission issues
+# Create the content directory
+sudo mkdir -p /var/www/html/content
+
+# Set permissive permissions on the web root and content directory to avoid permission issues
 sudo chmod -R 777 /var/www/html
 
-# Create an index.html file for the website content
+# Download the resume PDF into the content directory
+sudo wget -O /var/www/html/content/resume.pdf "https://resumeoscar.blob.core.windows.net/resume/resume/Oscar_Pettersson.pdf"
+
+# Create an index.html file for the website content with a link to the resume in the content folder
 cat <<EOF | sudo tee /var/www/html/index.html
 <!DOCTYPE html>
 <html>
@@ -25,6 +31,7 @@ cat <<EOF | sudo tee /var/www/html/index.html
 <body>
     <h1>Welcome to Oscar's Website!</h1>
     <p>Explore the site to learn more about me.</p>
+    <p><a href="content/resume.pdf">Download My Resume</a></p>
 </body>
 </html>
 EOF
@@ -33,7 +40,6 @@ EOF
 sudo systemctl restart httpd
 CUSTOM_DATA
 }
-
 
 
 # Public IP comes from LB
