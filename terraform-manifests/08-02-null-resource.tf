@@ -1,5 +1,5 @@
 # Null Resource for File Transfer and Other Remote Operations
-resource "null_resource" "copy_files_to_vm" {
+resource "null_resource" "copy_ssh_to_vm" {
   # Ensure this runs after the VM is created
   depends_on = [azurerm_linux_virtual_machine.bastion_host_linuxvm]
 

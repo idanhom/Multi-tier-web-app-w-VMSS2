@@ -29,7 +29,7 @@ resource "azurerm_linux_virtual_machine" "bastion_host_linuxvm" {
 
   admin_ssh_key {
     username   = "azureuser"
-    public_key = file("${path.module}/.ssh/terraform-azure.pub")  # Adjust the path to your public key
+    public_key = file("${path.module}/.ssh/terraform-azure.pub")
   }
 
   os_disk {
