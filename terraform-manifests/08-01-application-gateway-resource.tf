@@ -3,6 +3,7 @@ resource "azurerm_public_ip" "ag_publicip" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
+  sku                 = "Standard"
 }
 
 # Azure Application Gateway - Locals Block
@@ -23,8 +24,8 @@ resource "azurerm_application_gateway" "ag" {
   location            = azurerm_resource_group.rg.location
 
   sku {
-    name     = "Standard"
-    tier     = "Standard"
+    name     = "Standard_v2"
+    tier     = "Standard_v2"
     capacity = 2
   }
 
@@ -71,24 +72,24 @@ resource "azurerm_application_gateway" "ag" {
 
   # Health Probes for each VM
   probe {
-    name                = "${local.resource_name_prefix}-web-vm-probe"
-    protocol            = "Http"
-    port                = 80
-    path                = "/"
-    interval            = 30
-    timeout             = 30
-    unhealthy_threshold = 3
+    name                                      = "${local.resource_name_prefix}-web-vm-probe"
+    protocol                                  = "Http"
+    port                                      = 80
+    path                                      = "/"
+    interval                                  = 30
+    timeout                                   = 30
+    unhealthy_threshold                       = 3
     pick_host_name_from_backend_http_settings = true
   }
 
   probe {
-    name                = "${local.resource_name_prefix}-backend-vm-probe"
-    protocol            = "Http"
-    port                = 80
-    path                = "/my_resume.pdf" # Path to check health for the Backend VM
-    interval            = 30
-    timeout             = 30
-    unhealthy_threshold = 3
+    name                                      = "${local.resource_name_prefix}-backend-vm-probe"
+    protocol                                  = "Http"
+    port                                      = 80
+    path                                      = "/my_resume.pdf" # Path to check health for the Backend VM
+    interval                                  = 30
+    timeout                                   = 30
+    unhealthy_threshold                       = 3
     pick_host_name_from_backend_http_settings = true
   }
 
@@ -116,7 +117,7 @@ resource "azurerm_application_gateway" "ag" {
 
   request_routing_rule {
     name               = local.request_routing_rule_name
-    priority = 100
+    priority           = 100
     rule_type          = "PathBasedRouting"
     http_listener_name = local.listener_name
     url_path_map_name  = local.url_path_map_name
