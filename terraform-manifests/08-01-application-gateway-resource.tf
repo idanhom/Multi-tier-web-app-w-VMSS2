@@ -2,7 +2,7 @@ resource "azurerm_public_ip" "ag_publicip" {
   name                = "${local.resource_name_prefix}-ag-pip"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  allocation_method   = "Dynamic"
+  allocation_method   = "Static"
 }
 
 # Azure Application Gateway - Locals Block
@@ -23,8 +23,8 @@ resource "azurerm_application_gateway" "ag" {
   location            = azurerm_resource_group.rg.location
 
   sku {
-    name     = "Standard_v2"
-    tier     = "Standard_v2"
+    name     = "Standard"
+    tier     = "Standard"
     capacity = 2
   }
 
@@ -78,6 +78,7 @@ resource "azurerm_application_gateway" "ag" {
     interval            = 30
     timeout             = 30
     unhealthy_threshold = 3
+    pick_host_name_from_backend_http_settings = true
   }
 
   probe {
@@ -88,13 +89,13 @@ resource "azurerm_application_gateway" "ag" {
     interval            = 30
     timeout             = 30
     unhealthy_threshold = 3
+    pick_host_name_from_backend_http_settings = true
   }
 
   url_path_map {
     name                               = local.url_path_map_name
     default_backend_address_pool_name  = "${local.resource_name_prefix}-web-vm-pool"
     default_backend_http_settings_name = "${local.resource_name_prefix}-web-vm-http-settings"
-    default_http_listener_name         = local.listener_name
 
     path_rule {
       name                       = "resume-rule"
@@ -115,6 +116,7 @@ resource "azurerm_application_gateway" "ag" {
 
   request_routing_rule {
     name               = local.request_routing_rule_name
+    priority = 100
     rule_type          = "PathBasedRouting"
     http_listener_name = local.listener_name
     url_path_map_name  = local.url_path_map_name

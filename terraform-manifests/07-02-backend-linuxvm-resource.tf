@@ -1,23 +1,31 @@
 #here is need the config for hosting the resumé.
 #how to do with public ip or lb?resource "azurerm_network_interface" "resume_vm_nic" {
 locals {
-  resume_vm_custom_data = <<EOF
+  resume_vm_custom_data = <<CUSTOM_DATA
 #!/bin/bash
 # Install Apache and curl
 sudo yum install -y httpd curl
+
 # Start and enable Apache
 sudo systemctl start httpd
 sudo systemctl enable httpd
+
 # Disable the firewall
 sudo systemctl stop firewalld
 sudo systemctl disable firewalld
-# Download the resume PDF from Azure Blob Storage
-sudo curl -o /var/www/html/my_resume.pdf https://resumeoscar.blob.core.windows.net/resume/resume/Oscar_Pettersson.pdf
-# Create an HTML page to link to the PDF resume
-echo '<!DOCTYPE html><html><head><title>My Resume</title></head><body><h1>My Resume</h1><p>View my <a href="/my_resume.pdf">resume</a>.</p></body></html>' | sudo tee /var/www/html/index.html
+
+# Create the content directory
+sudo mkdir -p /var/www/html/content
+
+# Download the resume PDF into the content directory
+sudo curl -o /var/www/html/content/my_resume.pdf https://resumeoscar.blob.core.windows.net/resume/resume/Oscar_Pettersson.pdf
+
+# Create an HTML page within the content directory to link to the PDF resume
+echo '<!DOCTYPE html><html><head><title>My Resume</title></head><body><h1>My Resume</h1><p>View my <a href="/my_resume.pdf">resume</a>.</p></body></html>' | sudo tee /var/www/html/content/index.html
+
 # Restart Apache to apply changes
 sudo systemctl restart httpd
-EOF
+CUSTOM_DATA
 }
 
 
