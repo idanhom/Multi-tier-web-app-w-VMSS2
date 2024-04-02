@@ -12,7 +12,7 @@ variable "web_subnet_address" {
 }
 
 # App Subnet Address Space
-variable "app_subnet_address" {
+variable "backend_subnet_address" {
   description = "Virtual Network App Subnet Address Spaces"
   type        = list(string)
   default     = ["10.0.2.0/24"]
