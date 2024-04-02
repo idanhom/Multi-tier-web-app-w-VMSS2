@@ -1,17 +1,16 @@
 # todo now, 
-before going on with my modifications, currently when i deploy my bastion i get this error:
-│ Error: file provisioner error
-│ 
-│   with null_resource.copy_ssh_to_vm,
-│   on 08-02-null-resource.tf line 13, in resource "null_resource" "copy_ssh_to_vm":
-│   13:   provisioner "file" {
-│ 
-│ timeout - last error: dial tcp 10.0.1.4:22: i/o timeout
 
-troubleshoot this before continuing
+how do i ssh into the vm? it has no public ip? using bastion somehow
+the reason i want to ssh into the linux web vm is to check if the cv is deployed there...
+  but possibly it should be deployed on the backend linux vm
+
+now, the question is, what is the relationship between hosting the static website and linking to the cv?
+  linux web vm hosts the static website
+  linux backend hosts the cv
+   
 
 
-after that is done, proceed with the rest:
+
 -----------
 my goal now is that one vmss serves the static website and the resumé
 
