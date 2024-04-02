@@ -18,6 +18,6 @@ resource "null_resource" "copy_ssh_to_vm" {
   provisioner "remote-exec" {
     inline = [
       "sudo chmod 400 /tmp/terraform-azure.pem"
-  ]
+    ]
   }
 }

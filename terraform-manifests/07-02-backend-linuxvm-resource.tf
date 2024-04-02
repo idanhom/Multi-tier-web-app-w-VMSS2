@@ -42,7 +42,7 @@ resource "azurerm_linux_virtual_machine" "backend_linuxvm" {
   location              = azurerm_resource_group.rg.location
   size                  = "Standard_DS1_v2"
   admin_username        = "azureuser"
-  network_interface_ids = [azurerm_network_interface.backend_linuxvm_nic.id ]
+  network_interface_ids = [azurerm_network_interface.backend_linuxvm_nic.id]
 
   admin_ssh_key {
     username   = "azureuser"
