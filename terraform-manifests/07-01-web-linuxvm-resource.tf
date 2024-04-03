@@ -25,6 +25,8 @@ cat <<EOF | sudo tee /var/www/html/index.html
 <body>
     <h1>Welcome to Oscar's Website!</h1>
     <p>Explore the site to learn more about me.</p>
+    <!-- Add the link to the PDF hosted on the backend VM -->
+    <p><a href="/content/my_resume.pdf">Download Resume</a></p>
 </body>
 </html>
 EOF
@@ -33,6 +35,7 @@ EOF
 sudo systemctl restart httpd
 CUSTOM_DATA
 }
+
 
 
 resource "azurerm_network_interface" "web_linuxvm_nic" {

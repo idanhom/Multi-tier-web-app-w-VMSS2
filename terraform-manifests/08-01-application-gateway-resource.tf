@@ -86,7 +86,7 @@ resource "azurerm_application_gateway" "ag" {
     name                                      = "${local.resource_name_prefix}-backend-vm-probe"
     protocol                                  = "Http"
     port                                      = 80
-    path                                      = "/content/my_resume.pdf" # Path to check health for the Backend VM
+    path                                      = "/content/"
     interval                                  = 30
     timeout                                   = 30
     unhealthy_threshold                       = 3
