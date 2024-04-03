@@ -10,5 +10,10 @@ output "backend-linuxvm-ip" {
 
 output "bastion-linuxvm-ip" {
   description = "ip address of bastion-linuxvm"
-  value       = azurerm_network_interface.bastion_host_linuxvm_nic.private_ip_address
+  value       = azurerm_public_ip.bastion_host_publicip.ip_address
+}
+
+output "ag-frontend-ip" {
+  description = "ip address of ag-frontend"
+  value = azurerm_public_ip.ag_publicip.ip_address
 }
