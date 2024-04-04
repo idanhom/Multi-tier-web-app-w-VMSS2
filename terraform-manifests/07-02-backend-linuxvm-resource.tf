@@ -19,7 +19,12 @@ sudo mkdir -p /var/www/html/content
 sudo curl -o /var/www/html/content/my_resume.pdf https://resumeoscar.blob.core.windows.net/resume/resume/Oscar_Pettersson.pdf
 
 # Create an HTML page within the content directory to link to the PDF resume
-echo '<!DOCTYPE html><html><head><title>My Resume</title></head><body><h1>My Resume</h1><p>View my <a href="/my_resume.pdf">resume</a>.</p></body></html>' | sudo tee /var/www/html/content/index.html
+echo '<!DOCTYPE html><html><head><title>My Resume</title></head><body><h1>My Resume</h1><p>View my <a href="/content/my_resume.pdf">resume</a>.</p></body></html>' | sudo tee /var/www/html/content/index.html
+
+# Set permissions and ownership for Apache to access the content
+sudo chown -R apache:apache /var/www/html/content
+sudo chmod -R 755 /var/www/html/content
+
 
 # Restart Apache to apply changes
 sudo systemctl restart httpd

@@ -28,4 +28,4 @@ enable vmss autoscaling for web and backend linux vm
 
 ----------
 
-create self-hosted ssh (there is tutorial in 30 or 31 of terraform-on-azure-cloud guide)
+create self-hosted ssh (there is tutorial in 30 or 31 of terraform-on-azure-cloud guide), then also use https in application gateway
