@@ -1,5 +1,3 @@
-#here is need the config for hosting the resumé.
-#how to do with public ip or lb?resource "azurerm_network_interface" "resume_vm_nic" {
 locals {
   resume_vm_custom_data = <<CUSTOM_DATA
 #!/bin/bash
