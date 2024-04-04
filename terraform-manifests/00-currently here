@@ -1,14 +1,5 @@
 # todo now, 
 
-how do i ssh into the vm? it has no public ip? using bastion somehow
-the reason i want to ssh into the linux web vm is to check if the cv is deployed there...
-  but possibly it should be deployed on the backend linux vm
-
-now, the question is, what is the relationship between hosting the static website and linking to the cv?
-  linux web vm hosts the static website
-  linux backend hosts the cv
-   
-
 
 
 -----------
@@ -17,30 +8,24 @@ my goal now is that one vmss serves the static website and the resumé
 depending on where the user goes, either to the root
 or to the /resume path, the application gateway will direct the traffic to the appropriate backend pool
 
-
-
 follow: 
 C:\Users\pson9\Documents\github\terraform-on-azure-cloud\28-Azure-Application-Gateway-Path-Based-Routing
-
+-------------
 
 
 for the webvm_custom_data, make sure i do not disable the firewall completely... instead, make sure i can only access the vm through the basion (and then include the ip of the bastion). 
 this is done in the nsg for web
   
-/
-locals {
-ssh_source_address = "YOUR_IP_ADDRESS/32" # Replace with your IP address for SSH access
-}
-
-  source_address_prefix       = local.ssh_source_address
-/
-
----
+-------------
 
 
-
-
-
-also, actually have the cv in local file but use "azurerm_storage_container" to upload it... see c10 in #20 on local terraform-on-azure-cloud on windows drive
+make sure i host the resumé in the container as code, using "azurerm_storage_container" to upload it... see c10 in #20 on local terraform-on-azure-cloud on windows drive
 C:\Users\pson9\Documents\github\terraform-on-azure-cloud\20-Azure-External-and-Internal-LB-with-VMSS
 
+----------
+
+enable vmss autoscaling for web and backend linux vm
+
+----------
+
+create self-hosted ssh (there is tutorial in 30 or 31 of terraform-on-azure-cloud guide)
