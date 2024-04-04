@@ -13,7 +13,7 @@ sudo systemctl stop firewalld
 sudo systemctl disable firewalld
 
 # Set permissive permissions on the web root to avoid permission issues
-sudo chmod -R 777 /var/www/html
+sudo chmod -R 755 /var/www/html
 
 # Create an index.html file for the website content
 cat <<EOF | sudo tee /var/www/html/index.html
