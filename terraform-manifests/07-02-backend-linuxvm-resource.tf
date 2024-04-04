@@ -25,6 +25,7 @@ echo '<!DOCTYPE html><html><head><title>My Resume</title></head><body><h1>My Res
 sudo chown -R apache:apache /var/www/html/content
 sudo chmod -R 755 /var/www/html/content
 
+#^added new permissions see if that solves the problem
 
 # Restart Apache to apply changes
 sudo systemctl restart httpd
