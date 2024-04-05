@@ -1,5 +1,9 @@
 # todo now, 
 
+before going further, i need to recreate my ssh files because currently they have bad permission
+possible solution: chmod 600 .ssh/terraform-azure.pem
+
+
 
 
 -----------
@@ -10,6 +14,10 @@ or to the /resume path, the application gateway will direct the traffic to the a
 
 follow: 
 C:\Users\pson9\Documents\github\terraform-on-azure-cloud\28-Azure-Application-Gateway-Path-Based-Routing
+
+note, when having followed the above, i see the error 403 in health probe. here is text from chatgpt about troubleshooting:
+~/terraform-manifests/00-backend-server-problem.txt
+
 -------------
 
 
