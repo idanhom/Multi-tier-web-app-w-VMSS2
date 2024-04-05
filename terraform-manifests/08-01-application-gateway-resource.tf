@@ -13,9 +13,27 @@ locals {
   listener_name                  = "${local.resource_name_prefix}-httplstn"
   request_routing_rule_name      = "${local.resource_name_prefix}-rqrt"
   url_path_map_name              = "${local.resource_name_prefix}-upm"
-  backend_address_pool_name      = "${local.resource_name_prefix}-beap"
-  http_setting_name              = "${local.resource_name_prefix}-be-htst"
-  probe_name                     = "${local.resource_name_prefix}-be-probe"
+
+  // Backend pools names specific to each VM, adapt to my setup 
+  backend_address_pool_name_web    = "${local.resource_name_prefix}-web-vm-pool"
+  backend_address_pool_name_backend = "${local.resource_name_prefix}-backend-vm-pool"
+
+  // HTTP settings names specific to each VM
+  http_setting_name_web    = "${local.resource_name_prefix}-web-vm-http-settings"
+  http_setting_name_backend = "${local.resource_name_prefix}-backend-vm-http-settings"
+
+  // Health probe names specific to each VM
+  probe_name_web    = "${local.resource_name_prefix}-web-vm-probe"
+  probe_name_backend = "${local.resource_name_prefix}-backend-vm-probe"
+
+
+
+  
+  
+  # old settings
+  # backend_address_pool_name      = "${local.resource_name_prefix}-beap"
+  # http_setting_name              = "${local.resource_name_prefix}-be-htst"
+  # probe_name                     = "${local.resource_name_prefix}-be-probe"
 }
 
 resource "azurerm_application_gateway" "ag" {
@@ -45,17 +63,17 @@ resource "azurerm_application_gateway" "ag" {
   }
 
   backend_address_pool {
-    name         = "${local.resource_name_prefix}-web-vm-pool"
+    name         = local.backend_address_pool_name_web
     ip_addresses = [azurerm_linux_virtual_machine.web_linuxvm.private_ip_address]
   }
 
   backend_address_pool {
-    name         = "${local.resource_name_prefix}-backend-vm-pool"
+    name         = local.backend_address_pool_name_backend
     ip_addresses = [azurerm_linux_virtual_machine.backend_linuxvm.private_ip_address]
   }
 
   backend_http_settings {
-    name                  = "${local.resource_name_prefix}-web-vm-http-settings"
+    name                  = local.http_setting_name_web
     cookie_based_affinity = "Disabled"
     port                  = 80
     protocol              = "Http"
@@ -63,7 +81,7 @@ resource "azurerm_application_gateway" "ag" {
   }
 
   backend_http_settings {
-    name                  = "${local.resource_name_prefix}-backend-vm-http-settings"
+    name                  = local.http_setting_name_backend
     cookie_based_affinity = "Disabled"
     port                  = 80
     protocol              = "Http"
@@ -72,7 +90,7 @@ resource "azurerm_application_gateway" "ag" {
 
   # Health Probes for each VM
   probe {
-    name                                      = "${local.resource_name_prefix}-web-vm-probe"
+    name                                      = local.probe_name_web
     protocol                                  = "Http"
     port                                      = 80
     path                                      = "/"
@@ -83,7 +101,7 @@ resource "azurerm_application_gateway" "ag" {
   }
 
   probe {
-    name                                      = "${local.resource_name_prefix}-backend-vm-probe"
+    name                                      = local.probe_name_backend
     protocol                                  = "Http"
     port                                      = 80
     path                                      = "/content/index.html"
@@ -95,14 +113,14 @@ resource "azurerm_application_gateway" "ag" {
 
   url_path_map {
     name                               = local.url_path_map_name
-    default_backend_address_pool_name  = "${local.resource_name_prefix}-web-vm-pool"
-    default_backend_http_settings_name = "${local.resource_name_prefix}-web-vm-http-settings"
+    default_backend_address_pool_name  = local.backend_address_pool_name_web
+    default_backend_http_settings_name = local.http_setting_name_web
 
     path_rule {
-      name                       = "resume-rule"
+      name                       = "backend-rule"
       paths                      = ["/content/*"]
-      backend_address_pool_name  = "${local.resource_name_prefix}-backend-vm-pool"
-      backend_http_settings_name = "${local.resource_name_prefix}-backend-vm-http-settings"
+      backend_address_pool_name  = local.backend_address_pool_name_backend
+      backend_http_settings_name = local.http_setting_name_backend
     }
   }
 
@@ -112,8 +130,6 @@ resource "azurerm_application_gateway" "ag" {
     frontend_port_name             = local.frontend_port_name
     protocol                       = "Http"
   }
-
-
 
   request_routing_rule {
     name               = local.request_routing_rule_name
