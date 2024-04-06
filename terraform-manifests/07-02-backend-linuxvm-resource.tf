@@ -15,22 +15,24 @@ sudo systemctl disable firewalld
 # Create the content directory
 sudo mkdir -p /var/www/html/content
 
+# Create a simple health check endpoint
+echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body><h1>Status: OK</h1></body></html>' | sudo tee /var/www/html/health.html
+
 # Download the resume PDF into the content directory
-sudo curl -o /var/www/html/content/my_resume.pdf https://resumeoscar.blob.core.windows.net/resume/resume/Oscar_Pettersson.pdf
+sudo curl -o /var/www/html/content/my_resume.pdf "https://resumeoscar.blob.core.windows.net/resume/resume/Oscar_Pettersson.pdf"
 
 # Create an HTML page within the content directory to link to the PDF resume
 echo '<!DOCTYPE html><html><head><title>My Resume</title></head><body><h1>My Resume</h1><p>View my <a href="/content/my_resume.pdf">resume</a>.</p></body></html>' | sudo tee /var/www/html/content/index.html
 
-# Set permissions and ownership for Apache to access the content
-sudo chown -R apache:apache /var/www/html/content
-sudo chmod -R 755 /var/www/html/content
-
-#^added new permissions see if that solves the problem
+# Set permissions and ownership for Apache to access the content and health check
+sudo chown -R apache:apache /var/www/html
+sudo chmod -R 755 /var/www/html
 
 # Restart Apache to apply changes
 sudo systemctl restart httpd
 CUSTOM_DATA
 }
+
 
 
 //for trobuleshooting to ensure vm works as intended.
@@ -51,7 +53,7 @@ resource "azurerm_network_interface" "backend_linuxvm_nic" {
     name                          = "resume-vm-ip-config"
     subnet_id                     = azurerm_subnet.backendsubnet.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id = azurerm_public_ip.backend-pip.id
+    # public_ip_address_id = azurerm_public_ip.backend-pip.id
   }
 }
 

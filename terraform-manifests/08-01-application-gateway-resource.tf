@@ -114,7 +114,7 @@ resource "azurerm_application_gateway" "ag" {
     name                                      = local.probe_name_backend
     protocol                                  = "Http"
     port                                      = 80
-    path                                      = "/content/index.html"
+    path                                      = "/health"
     interval                                  = 30
     timeout                                   = 30
     unhealthy_threshold                       = 3
