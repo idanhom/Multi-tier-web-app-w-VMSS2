@@ -25,7 +25,7 @@ sudo curl -o /var/www/html/content/my_resume.pdf "https://resumeoscar.blob.core.
 echo '<!DOCTYPE html><html><head><title>My Resume</title></head><body><h1>My Resume</h1><p>View my <a href="/content/my_resume.pdf">resume</a>.</p></body></html>' | sudo tee /var/www/html/content/index.html
 
 # Set permissions and ownership for Apache to access the content and health check
-sudo chown -R apache:apache /var/www/html
+#sudo chown -R apache:apache /var/www/html
 sudo chmod -R 755 /var/www/html
 
 # Restart Apache to apply changes
@@ -45,12 +45,12 @@ CUSTOM_DATA
 
 
 resource "azurerm_network_interface" "backend_linuxvm_nic" {
-  name                = "${local.resource_name_prefix}-resume-vm-nic"
+  name                = "${local.resource_name_prefix}-backend-linuxvm-nic"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 
   ip_configuration {
-    name                          = "resume-vm-ip-config"
+    name                          = "backend-linuxvm-ip-1"
     subnet_id                     = azurerm_subnet.backendsubnet.id
     private_ip_address_allocation = "Dynamic"
     # public_ip_address_id = azurerm_public_ip.backend-pip.id
@@ -58,7 +58,7 @@ resource "azurerm_network_interface" "backend_linuxvm_nic" {
 }
 
 resource "azurerm_linux_virtual_machine" "backend_linuxvm" {
-  name                  = "${local.resource_name_prefix}-resume-vm"
+  name                  = "${local.resource_name_prefix}-backend-linuxvm"
   resource_group_name   = azurerm_resource_group.rg.name
   location              = azurerm_resource_group.rg.location
   size                  = "Standard_DS1_v2"
