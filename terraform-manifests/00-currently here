@@ -1,5 +1,7 @@
 # todo now, 
 
+https://chat.openai.com/g/g-pDLabuKvD-terraform-guide/c/5b0f9294-bd35-4fa7-ab43-16a7ce92285d
+
 troubleshooting 502
 https://learn.microsoft.com/en-us/azure/application-gateway/application-gateway-troubleshooting-502
 https://techcommunity.microsoft.com/t5/azure-networking/502-bad-gateway-error-for-azure-application-gateway/m-p/3966365
@@ -7,6 +9,8 @@ https://techcommunity.microsoft.com/t5/azure-networking/502-bad-gateway-error-fo
 
 azure.... ag... rules....
 azure... ag... backend health
+
+ssh into backend and check health.html (does it even exist?)
 
 ------------
 
