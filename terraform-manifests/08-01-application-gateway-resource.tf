@@ -52,44 +52,38 @@ resource "azurerm_application_gateway" "ag" {
     subnet_id = azurerm_subnet.agsubnet.id
   }
 
+  # Front End Config
   frontend_port {
     name = local.frontend_port_name
     port = 80
   }
+
+  # Listener: HTTP Port 80
+  http_listener {
+  name                           = local.listener_name
+  frontend_ip_configuration_name = local.frontend_ip_configuration_name
+  frontend_port_name             = local.frontend_port_name
+  protocol                       = "Http"
+}
 
   frontend_ip_configuration {
     name                 = local.frontend_ip_configuration_name
     public_ip_address_id = azurerm_public_ip.ag_publicip.id
   }
 
+  # Web Linux VM
   backend_address_pool {
     name         = local.backend_address_pool_name_web
     ip_addresses = [azurerm_linux_virtual_machine.web_linuxvm.private_ip_address]
   }
-
-  backend_address_pool {
-    name         = local.backend_address_pool_name_backend
-    ip_addresses = [azurerm_linux_virtual_machine.backend_linuxvm.private_ip_address]
-  }
-
-  backend_http_settings {
+    backend_http_settings {
     name                  = local.http_setting_name_web
     cookie_based_affinity = "Disabled"
     port                  = 80
     protocol              = "Http"
     request_timeout       = 60
   }
-
-  backend_http_settings {
-    name                  = local.http_setting_name_backend
-    cookie_based_affinity = "Disabled"
-    port                  = 80
-    protocol              = "Http"
-    request_timeout       = 60
-  }
-
-  # Health Probes for each VM
-  probe {
+    probe {
     name                                      = local.probe_name_web
     protocol                                  = "Http"
     port                                      = 80
@@ -100,7 +94,21 @@ resource "azurerm_application_gateway" "ag" {
     pick_host_name_from_backend_http_settings = true
   }
 
-  probe {
+
+
+  # Backend Linux VM
+  backend_address_pool {
+    name         = local.backend_address_pool_name_backend
+    ip_addresses = [azurerm_linux_virtual_machine.backend_linuxvm.private_ip_address]
+  }
+    backend_http_settings {
+    name                  = local.http_setting_name_backend
+    cookie_based_affinity = "Disabled"
+    port                  = 80
+    protocol              = "Http"
+    request_timeout       = 60
+  }
+    probe {
     name                                      = local.probe_name_backend
     protocol                                  = "Http"
     port                                      = 80
@@ -110,6 +118,9 @@ resource "azurerm_application_gateway" "ag" {
     unhealthy_threshold                       = 3
     pick_host_name_from_backend_http_settings = true
   }
+
+
+
 
   url_path_map {
     name                               = local.url_path_map_name
@@ -124,12 +135,7 @@ resource "azurerm_application_gateway" "ag" {
     }
   }
 
-  http_listener {
-    name                           = local.listener_name
-    frontend_ip_configuration_name = local.frontend_ip_configuration_name
-    frontend_port_name             = local.frontend_port_name
-    protocol                       = "Http"
-  }
+
 
   request_routing_rule {
     name               = local.request_routing_rule_name
