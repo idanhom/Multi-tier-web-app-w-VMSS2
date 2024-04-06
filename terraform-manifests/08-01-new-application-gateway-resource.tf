@@ -6,7 +6,11 @@ resource "azurerm_public_ip" "ag_publicip" {
   sku                 = "Standard"
 }
 
-# Simplified and centralized local variables
+
+
+
+
+
 locals {
   probe_path_web         = "/"
   probe_path_backend     = "/health.html"
@@ -96,12 +100,12 @@ resource "azurerm_application_gateway" "ag" {
   # Backend Address Pools
   backend_address_pool {
     name         = "${local.resource_name_prefix}-web-pool"
-    ip_addresses = [azurerm_network_interface.web_linuxvm_nic.ip_configuration[0].private_ip_address]
+    ip_addresses = [azurerm_network_interface.web_linuxvm_nic.private_ip_address]
   }
 
   backend_address_pool {
     name         = "${local.resource_name_prefix}-backend-pool"
-    ip_addresses = [azurerm_network_interface.backend_linuxvm_nic.ip_configuration[0].private_ip_address]
+    ip_addresses = [azurerm_network_interface.backend_linuxvm_nic.private_ip_address] 
   }
 
   # URL Path Map for Routing
