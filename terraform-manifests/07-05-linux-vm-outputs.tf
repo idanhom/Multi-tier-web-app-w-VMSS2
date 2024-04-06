@@ -24,5 +24,5 @@ output "bastion-linuxvm-ip" {
 
 output "ag-frontend-ip" {
   description = "ip address of ag-frontend"
-  value = azurerm_public_ip.ag_publicip.ip_address
+  value       = azurerm_public_ip.ag_publicip.ip_address
 }
