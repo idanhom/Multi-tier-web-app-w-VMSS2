@@ -20,7 +20,7 @@ resource "azurerm_subnet_network_security_group_association" "backendsubnet_nsg"
 
 
 resource "azurerm_network_security_rule" "backend_nsg_rule_inbound" {
-  for_each                    = local.web_inbound_ports_map
+  for_each                    = local.backend_inbound_ports_map
   resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.backendsubnet_nsg.name
   name                        = "Rule-Port-${each.value}"
