@@ -53,9 +53,18 @@ resource "azurerm_application_gateway" "ag" {
     protocol                       = local.http_protocol
   }
 
-  # Backend HTTP Settings and Probes
+  # Backend HTTP Settings for Static Web VM
   backend_http_settings {
-    name                  = "${local.resource_name_prefix}-http-settings"
+    name                  = "${local.resource_name_prefix}-web-http-settings"
+    cookie_based_affinity = "Disabled"
+    port                  = local.http_port
+    protocol              = local.http_protocol
+    request_timeout       = local.http_timeout
+  }
+
+  # Backend HTTP Settings for Backend VM
+  backend_http_settings {
+    name                  = "${local.resource_name_prefix}-backend-http-settings"
     cookie_based_affinity = "Disabled"
     port                  = local.http_port
     protocol              = local.http_protocol
@@ -99,13 +108,13 @@ resource "azurerm_application_gateway" "ag" {
   url_path_map {
     name                               = "${local.resource_name_prefix}-upm"
     default_backend_address_pool_name  = "${local.resource_name_prefix}-web-pool"
-    default_backend_http_settings_name = "${local.resource_name_prefix}-http-settings"
+    default_backend_http_settings_name = "${local.resource_name_prefix}-web-http-settings"
 
     path_rule {
       name                       = "backend-rule"
       paths                      = ["/content/*"]
       backend_address_pool_name  = "${local.resource_name_prefix}-backend-pool"
-      backend_http_settings_name = "${local.resource_name_prefix}-http-settings"
+      backend_http_settings_name = "${local.resource_name_prefix}-backend-http-settings"
     }
   }
 
