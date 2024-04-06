@@ -33,7 +33,13 @@ CUSTOM_DATA
 }
 
 
-
+//for trobuleshooting to ensure vm works as intended.
+# resource "azurerm_public_ip" "backend-pip" {
+#   name = "backend-public-ip"
+#   resource_group_name = azurerm_resource_group.rg.name
+#   location = azurerm_resource_group.rg.location
+#   allocation_method = "Static"
+# }
 
 
 resource "azurerm_network_interface" "backend_linuxvm_nic" {
@@ -45,6 +51,7 @@ resource "azurerm_network_interface" "backend_linuxvm_nic" {
     name                          = "resume-vm-ip-config"
     subnet_id                     = azurerm_subnet.backendsubnet.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id = azurerm_public_ip.backend-pip.id
   }
 }
 

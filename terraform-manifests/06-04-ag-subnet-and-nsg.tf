@@ -26,7 +26,7 @@ locals {
   ag_inbound_ports_map = {
     "100" : "80", # If the key starts with a number, you must use the colon syntax ":" instead of "="
     "110" : "443",
-    "130" : "65200-65535"
+    "130" : "65200-65535" # Is this necessary?
   }
 }
 ## NSG Inbound Rule for Azure Application Gateway Subnets

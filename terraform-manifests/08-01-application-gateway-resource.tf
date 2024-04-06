@@ -27,7 +27,9 @@ locals {
   probe_name_backend = "${local.resource_name_prefix}-backend-vm-probe"
 
 
-
+  # IS THIS SOMETHING TO ADD TO THE CONFIG?
+  # Default Redirect on Root Context (/)
+  redirect_configuration_name    = "${azurerm_virtual_network.vnet.name}-rdrcfg"
   
   
   # old settings
