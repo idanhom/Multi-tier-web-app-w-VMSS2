@@ -27,15 +27,10 @@ locals {
   probe_name_backend = "${local.resource_name_prefix}-backend-vm-probe"
 
 
-  # IS THIS SOMETHING TO ADD TO THE CONFIG?
   # Default Redirect on Root Context (/)
-  redirect_configuration_name    = "${azurerm_virtual_network.vnet.name}-rdrcfg"
+  # redirect_configuration_name    = "${azurerm_virtual_network.vnet.name}-rdrcfg"
   
-  
-  # old settings
-  # backend_address_pool_name      = "${local.resource_name_prefix}-beap"
-  # http_setting_name              = "${local.resource_name_prefix}-be-htst"
-  # probe_name                     = "${local.resource_name_prefix}-be-probe"
+
 }
 
 resource "azurerm_application_gateway" "ag" {
@@ -76,7 +71,7 @@ resource "azurerm_application_gateway" "ag" {
   # Web Linux VM
   backend_address_pool {
     name         = local.backend_address_pool_name_web
-    ip_addresses = [azurerm_linux_virtual_machine.web_linuxvm.private_ip_address]
+    ip_addresses = [azurerm_network_interface.web_linuxvm_nic.ip_configuration[0].private_ip_address]
   }
     backend_http_settings {
     name                  = local.http_setting_name_web
@@ -101,7 +96,7 @@ resource "azurerm_application_gateway" "ag" {
   # Backend Linux VM
   backend_address_pool {
     name         = local.backend_address_pool_name_backend
-    ip_addresses = [azurerm_linux_virtual_machine.backend_linuxvm.private_ip_address]
+    ip_addresses = [azurerm_network_interface.backend_linuxvm_nic.ip_configuration[0].private_ip_address]
   }
     backend_http_settings {
     name                  = local.http_setting_name_backend
