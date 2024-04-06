@@ -118,8 +118,7 @@ resource "azurerm_application_gateway" "ag" {
     interval                                  = 30
     timeout                                   = 30
     unhealthy_threshold                       = 3
-    host = "10.0.2.4"
-    #pick_host_name_from_backend_http_settings = true
+    pick_host_name_from_backend_http_settings = true
   }
 
 
