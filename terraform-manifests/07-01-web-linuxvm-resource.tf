@@ -37,6 +37,62 @@ CUSTOM_DATA
 
 
 
+resource "azurerm_linux_virtual_machine_scale_set" "frontend" {
+  name                = "${local.resource_name_prefix}-frontend"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  sku                 = "Standard_DS1_v2"
+  instances           = 2
+  admin_username      = "azureuser"
+
+  admin_ssh_key {
+    username   = "azureuser"
+    public_key = file("${path.module}/.ssh/terraform-azure.pub")
+  }
+
+  source_image_reference {
+    publisher = "RedHat"
+    offer     = "RHEL"
+    sku       = "83-gen2"
+    version   = "latest"
+  }
+
+  os_disk {
+    caching              = "ReadWrite"
+    storage_account_type = "Standard_LRS"
+  }
+
+  upgrade_mode = "Automatic"
+
+  network_interface {
+    name    = "frontend-nic"
+    primary = true
+    network_security_group_id = azurerm_network_security_group.frontend.id
+
+    ip_configuration {
+      name                          = "frontend-vmss-nic"
+      primary = true
+      network_interface_ids = 
+
+
+
+    }
+
+
+
+
+  }
+
+
+
+
+
+
+}
+
+
+
+
 resource "azurerm_network_interface" "web_linuxvm_nic" {
   name                = "${local.resource_name_prefix}-web-linuxvm-nic"
   location            = azurerm_resource_group.rg.location
@@ -59,22 +115,9 @@ resource "azurerm_linux_virtual_machine" "web_linuxvm" {
   admin_username        = "azureuser"
   network_interface_ids = [azurerm_network_interface.web_linuxvm_nic.id]
 
-  admin_ssh_key {
-    username   = "azureuser"
-    public_key = file("${path.module}/.ssh/terraform-azure.pub")
-  }
 
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
-  }
 
-  source_image_reference {
-    publisher = "RedHat"
-    offer     = "RHEL"
-    sku       = "83-gen2"
-    version   = "latest"
-  }
+
 
   custom_data = base64encode(local.webvm_custom_data)
 }
