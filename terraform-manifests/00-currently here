@@ -1,16 +1,35 @@
 # todo now, 
 
+https://chat.openai.com/g/g-pDLabuKvD-terraform-guide/c/5b0f9294-bd35-4fa7-ab43-16a7ce92285d
+
+troubleshooting 502
+https://learn.microsoft.com/en-us/azure/application-gateway/application-gateway-troubleshooting-502
+https://techcommunity.microsoft.com/t5/azure-networking/502-bad-gateway-error-for-azure-application-gateway/m-p/3966365
+
+
+azure.... ag... rules....
+azure... ag... backend health
+
+ssh into backend and check health.html (does it even exist?)
+
+------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 -----------
-my goal now is that one vmss serves the static website and the resumé
-
-depending on where the user goes, either to the root
-or to the /resume path, the application gateway will direct the traffic to the appropriate backend pool
-
-follow: 
-C:\Users\pson9\Documents\github\terraform-on-azure-cloud\28-Azure-Application-Gateway-Path-Based-Routing
--------------
 
 
 for the webvm_custom_data, make sure i do not disable the firewall completely... instead, make sure i can only access the vm through the basion (and then include the ip of the bastion). 

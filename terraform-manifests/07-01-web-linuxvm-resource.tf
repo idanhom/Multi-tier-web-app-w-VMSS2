@@ -25,7 +25,6 @@ cat <<EOF | sudo tee /var/www/html/index.html
 <body>
     <h1>Welcome to Oscar's Website!</h1>
     <p>Explore the site to learn more about me.</p>
-    <!-- Add the link to the PDF hosted on the backend VM -->
     <p><a href="/content/my_resume.pdf">Download Resume</a></p>
 </body>
 </html>
@@ -59,14 +58,17 @@ resource "azurerm_linux_virtual_machine" "web_linuxvm" {
   size                  = "Standard_DS1_v2"
   admin_username        = "azureuser"
   network_interface_ids = [azurerm_network_interface.web_linuxvm_nic.id]
+
   admin_ssh_key {
     username   = "azureuser"
     public_key = file("${path.module}/.ssh/terraform-azure.pub")
   }
+
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
+
   source_image_reference {
     publisher = "RedHat"
     offer     = "RHEL"

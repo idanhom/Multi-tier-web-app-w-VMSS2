@@ -1,6 +1,6 @@
 # Resource-1: Create Application Gateway Subnet
 resource "azurerm_subnet" "agsubnet" {
-  name                 = "${azurerm_virtual_network.vnet.name}-bastionsubnet"
+  name                 = "${azurerm_virtual_network.vnet.name}-agsubnet"
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = var.ag_subnet_address
@@ -20,15 +20,7 @@ resource "azurerm_subnet_network_security_group_association" "ag_subnet_nsg_asso
   network_security_group_id = azurerm_network_security_group.ag_subnet_nsg.id
 }
 
-# Resource-4: Create NSG Rules
-## Locals Block for Security Rules
-locals {
-  ag_inbound_ports_map = {
-    "100" : "80", # If the key starts with a number, you must use the colon syntax ":" instead of "="
-    "110" : "443",
-    "130" : "65200-65535"
-  }
-}
+
 ## NSG Inbound Rule for Azure Application Gateway Subnets
 resource "azurerm_network_security_rule" "ag_nsg_rule_inbound" {
   for_each                    = local.ag_inbound_ports_map
@@ -46,3 +38,11 @@ resource "azurerm_network_security_rule" "ag_nsg_rule_inbound" {
 }
 
 
+## Locals Block for Security Rules
+locals {
+  ag_inbound_ports_map = {
+    "100" : "80",
+    "110" : "443",
+    "130" : "65200-65535"
+  }
+}
