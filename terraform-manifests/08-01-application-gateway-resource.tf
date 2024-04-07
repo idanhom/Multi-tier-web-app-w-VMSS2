@@ -1,147 +1,130 @@
-# resource "azurerm_public_ip" "ag_publicip" {
-#   name                = "${local.resource_name_prefix}-ag-pip"
-#   resource_group_name = azurerm_resource_group.rg.name
-#   location            = azurerm_resource_group.rg.location
-#   allocation_method   = "Static"
-#   sku                 = "Standard"
-# }
-
-# # Azure Application Gateway - Locals Block
-# locals {
-#   frontend_port_name             = "${local.resource_name_prefix}-feport"
-#   frontend_ip_configuration_name = "${local.resource_name_prefix}-feip"
-#   listener_name                  = "${local.resource_name_prefix}-httplstn"
-#   request_routing_rule_name      = "${local.resource_name_prefix}-rqrt"
-#   url_path_map                   =  "${azurerm_virtual_network.vnet.name}-upm-static-and-backend"
-#   url_path_map_name              = "${local.resource_name_prefix}-upm"
-
-#   // Backend pools names specific to each VM, adapt to my setup 
-#   backend_address_pool_name_web    = "${local.resource_name_prefix}-web-vm-pool"
-#   backend_address_pool_name_backend = "${local.resource_name_prefix}-backend-vm-pool"
-
-#   // HTTP settings names specific to each VM
-#   http_setting_name_web    = "${local.resource_name_prefix}-web-vm-http-settings"
-#   http_setting_name_backend = "${local.resource_name_prefix}-backend-vm-http-settings"
-
-#   // Health probe names specific to each VM
-#   probe_name_web    = "${local.resource_name_prefix}-web-vm-probe"
-#   probe_name_backend = "${local.resource_name_prefix}-backend-vm-probe"
+resource "azurerm_public_ip" "ag_publicip" {
+  name                = "${local.resource_name_prefix}-ag-pip"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  allocation_method   = "Static"
+  sku                 = "Standard"
+}
 
 
-#   # Default Redirect on Root Context (/)
-#   redirect_configuration_name    = "${azurerm_virtual_network.vnet.name}-rdrcfg"
+locals {
+  probe_path_web         = "/"
+  probe_path_backend     = "/health.html"
+  http_port              = 80
+  http_protocol          = "Http"
+  http_timeout           = 60
+  probe_interval         = 30
+  probe_timeout          = 30
+  probe_unhealthy_thresh = 3
+}
 
+resource "azurerm_application_gateway" "ag" {
+  name                = "${local.resource_name_prefix}-ag"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
 
-# }
+  sku {
+    name     = "Standard_v2"
+    tier     = "Standard_v2"
+    capacity = 2
+  }
 
-# resource "azurerm_application_gateway" "ag" {
-#   name                = "${local.resource_name_prefix}-ag"
-#   resource_group_name = azurerm_resource_group.rg.name
-#   location            = azurerm_resource_group.rg.location
+  gateway_ip_configuration {
+    name      = "${local.resource_name_prefix}-gwip"
+    subnet_id = azurerm_subnet.agsubnet.id
+  }
 
-#   sku {
-#     name     = "Standard_v2"
-#     tier     = "Standard_v2"
-#     capacity = 2
-#   }
+  # Frontend Configuration
+  frontend_port {
+    name = "${local.resource_name_prefix}-feport"
+    port = local.http_port
+  }
 
-#   gateway_ip_configuration {
-#     name      = "${local.resource_name_prefix}-gwip"
-#     subnet_id = azurerm_subnet.agsubnet.id
-#   }
+  frontend_ip_configuration {
+    name                 = "${local.resource_name_prefix}-feip"
+    public_ip_address_id = azurerm_public_ip.ag_publicip.id
+  }
 
-#   # Front End Config
-#   frontend_port {
-#     name = local.frontend_port_name
-#     port = 80
-#   }
+  # Listener: HTTP Port 80
+  http_listener {
+    name                           = "${local.resource_name_prefix}-httplstn"
+    frontend_ip_configuration_name = "${local.resource_name_prefix}-feip"
+    frontend_port_name             = "${local.resource_name_prefix}-feport"
+    protocol                       = local.http_protocol
+  }
 
-#   # Listener: HTTP Port 80
-#   http_listener {
-#   name                           = local.listener_name
-#   frontend_ip_configuration_name = local.frontend_ip_configuration_name
-#   frontend_port_name             = local.frontend_port_name
-#   protocol                       = "Http"
-# }
+  # Backend HTTP Settings for Static Web VM
+  backend_http_settings {
+    name                  = "${local.resource_name_prefix}-web-http-settings"
+    cookie_based_affinity = "Disabled"
+    port                  = local.http_port
+    protocol              = local.http_protocol
+    request_timeout       = local.http_timeout
+  }
 
-#   frontend_ip_configuration {
-#     name                 = local.frontend_ip_configuration_name
-#     public_ip_address_id = azurerm_public_ip.ag_publicip.id
-#   }
+  # Backend HTTP Settings for Backend VM
+  backend_http_settings {
+    name                  = "${local.resource_name_prefix}-backend-http-settings"
+    cookie_based_affinity = "Disabled"
+    port                  = local.http_port
+    protocol              = local.http_protocol
+    request_timeout       = local.http_timeout
+    probe_name            = "${local.resource_name_prefix}-backend-probe"
+  }
 
-#   # Web Linux VM
-#   backend_address_pool {
-#     name         = local.backend_address_pool_name_web
-#     ip_addresses = [azurerm_network_interface.web_linuxvm_nic.ip_configuration[0].private_ip_address]
-#   }
-#     backend_http_settings {
-#     name                  = local.http_setting_name_web
-#     cookie_based_affinity = "Disabled"
-#     port                  = 80
-#     protocol              = "Http"
-#     request_timeout       = 60
-#   }
-#     probe {
-#     name                                      = local.probe_name_web
-#     protocol                                  = "Http"
-#     port                                      = 80
-#     path                                      = "/"
-#     interval                                  = 30
-#     timeout                                   = 30
-#     unhealthy_threshold                       = 3
-#     pick_host_name_from_backend_http_settings = true
-#   }
+  probe {
+    name                                      = "${local.resource_name_prefix}-web-probe"
+    protocol                                  = local.http_protocol
+    port                                      = local.http_port
+    path                                      = local.probe_path_web
+    interval                                  = local.probe_interval
+    timeout                                   = local.probe_timeout
+    unhealthy_threshold                       = local.probe_unhealthy_thresh
+    pick_host_name_from_backend_http_settings = true
+  }
 
+  probe {
+    name                = "${local.resource_name_prefix}-backend-probe"
+    protocol            = local.http_protocol
+    port                = local.http_port
+    path                = local.probe_path_backend
+    interval            = local.probe_interval
+    timeout             = local.probe_timeout
+    unhealthy_threshold = local.probe_unhealthy_thresh
+    host                = azurerm_network_interface.backend_linuxvm_nic.private_ip_address
+  }
 
+  # Backend Address Pools
+  backend_address_pool {
+    name         = "${local.resource_name_prefix}-web-pool"
+    ip_addresses = [azurerm_network_interface.web_linuxvm_nic.private_ip_address]
+  }
 
-#   # Backend Linux VM
-#   backend_address_pool {
-#     name         = local.backend_address_pool_name_backend
-#     ip_addresses = [azurerm_network_interface.backend_linuxvm_nic.ip_configuration[0].private_ip_address]
-#   }
-#     backend_http_settings {
-#     name                  = local.http_setting_name_backend
-#     cookie_based_affinity = "Disabled"
-#     port                  = 80
-#     protocol              = "Http"
-#     request_timeout       = 60
-#   }
-#     probe {
-#     name                                      = local.probe_name_backend
-#     protocol                                  = "Http"
-#     port                                      = 80
-#     path                                      = "/health.html"
-#     interval                                  = 30
-#     timeout                                   = 30
-#     unhealthy_threshold                       = 3
-#     host = "127.0.0.1"
-#   }
+  backend_address_pool {
+    name         = "${local.resource_name_prefix}-backend-pool"
+    ip_addresses = [azurerm_network_interface.backend_linuxvm_nic.private_ip_address]
+  }
 
+  # URL Path Map for Routing
+  url_path_map {
+    name                               = "${local.resource_name_prefix}-upm"
+    default_backend_address_pool_name  = "${local.resource_name_prefix}-web-pool"
+    default_backend_http_settings_name = "${local.resource_name_prefix}-web-http-settings"
 
+    path_rule {
+      name                       = "backend-rule"
+      paths                      = ["/content/*"]
+      backend_address_pool_name  = "${local.resource_name_prefix}-backend-pool"
+      backend_http_settings_name = "${local.resource_name_prefix}-backend-http-settings"
+    }
+  }
 
-#   request_routing_rule {
-#     name               = local.request_routing_rule_name
-#     priority           = 100
-#     rule_type          = "PathBasedRouting"
-#     http_listener_name = local.listener_name
-#     url_path_map_name  = local.url_path_map_name
-#   }
-
-
-#   url_path_map {
-#     name                               = local.url_path_map_name
-#     default_backend_address_pool_name  = local.backend_address_pool_name_web
-#     default_backend_http_settings_name = local.http_setting_name_web
-
-#     path_rule {
-#       name                       = "backend-rule"
-#       paths                      = ["/content/*"]
-#       backend_address_pool_name  = local.backend_address_pool_name_backend
-#       backend_http_settings_name = local.http_setting_name_backend
-#     }
-#   }
-
-
-
-
-# }
+  # Request Routing Rule
+  request_routing_rule {
+    name               = "${local.resource_name_prefix}-rqrt"
+    rule_type          = "PathBasedRouting"
+    priority           = 100
+    http_listener_name = "${local.resource_name_prefix}-httplstn"
+    url_path_map_name  = "${local.resource_name_prefix}-upm"
+  }
+}

@@ -1,41 +1,7 @@
 # todo now, 
 
-https://chat.openai.com/g/g-pDLabuKvD-terraform-guide/c/5b0f9294-bd35-4fa7-ab43-16a7ce92285d
-
-troubleshooting 502
-https://learn.microsoft.com/en-us/azure/application-gateway/application-gateway-troubleshooting-502
-https://techcommunity.microsoft.com/t5/azure-networking/502-bad-gateway-error-for-azure-application-gateway/m-p/3966365
-
-
-azure.... ag... rules....
-azure... ag... backend health
-
-ssh into backend and check health.html (does it even exist?)
-
-------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 -----------
-
-
-for the webvm_custom_data, make sure i do not disable the firewall completely... instead, make sure i can only access the vm through the basion (and then include the ip of the bastion). 
-this is done in the nsg for web
-  
--------------
 
 
 make sure i host the resumé in the container as code, using "azurerm_storage_container" to upload it... see c10 in #20 on local terraform-on-azure-cloud on windows drive

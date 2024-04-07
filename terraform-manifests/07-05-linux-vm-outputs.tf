@@ -8,14 +8,6 @@ output "backend-linuxvm-ip" {
   value       = azurerm_network_interface.backend_linuxvm_nic.private_ip_address
 }
 
-//for troubleshooting to see that backend vm works as intended (it does)
-# output "backend-linuxvm-pip" {
-#   description = "pip of backend vm"
-#   value = azurerm_public_ip.backend-pip.ip_address
-# }
-
-
-
 
 output "bastion-linuxvm-ip" {
   description = "ip address of bastion-linuxvm"

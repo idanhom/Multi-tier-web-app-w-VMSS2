@@ -8,5 +8,3 @@ output "ds_vnet_address_space" {
   description = "Address Space of the Virtual Network"
   value       = data.azurerm_virtual_network.vnetds.address_space
 }
-
-# Här ska outputs för fler subnets in.
