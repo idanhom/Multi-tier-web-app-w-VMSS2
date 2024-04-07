@@ -69,6 +69,7 @@ resource "azurerm_application_gateway" "ag" {
     port                  = local.http_port
     protocol              = local.http_protocol
     request_timeout       = local.http_timeout
+    probe_name            = "${local.resource_name_prefix}-backend-probe"
   }
 
   probe {
@@ -83,14 +84,14 @@ resource "azurerm_application_gateway" "ag" {
   }
 
   probe {
-    name                                      = "${local.resource_name_prefix}-backend-probe"
-    protocol                                  = local.http_protocol
-    port                                      = local.http_port
-    path                                      = local.probe_path_backend
-    interval                                  = local.probe_interval
-    timeout                                   = local.probe_timeout
-    unhealthy_threshold                       = local.probe_unhealthy_thresh
-    pick_host_name_from_backend_http_settings = true
+    name                = "${local.resource_name_prefix}-backend-probe"
+    protocol            = local.http_protocol
+    port                = local.http_port
+    path                = local.probe_path_backend
+    interval            = local.probe_interval
+    timeout             = local.probe_timeout
+    unhealthy_threshold = local.probe_unhealthy_thresh
+    host                = azurerm_network_interface.backend_linuxvm_nic.private_ip_address
   }
 
   # Backend Address Pools
@@ -101,7 +102,7 @@ resource "azurerm_application_gateway" "ag" {
 
   backend_address_pool {
     name         = "${local.resource_name_prefix}-backend-pool"
-    ip_addresses = [azurerm_network_interface.backend_linuxvm_nic.private_ip_address] 
+    ip_addresses = [azurerm_network_interface.backend_linuxvm_nic.private_ip_address]
   }
 
   # URL Path Map for Routing

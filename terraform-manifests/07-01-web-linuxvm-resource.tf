@@ -68,7 +68,7 @@ resource "azurerm_linux_virtual_machine" "web_linuxvm" {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
-  
+
   source_image_reference {
     publisher = "RedHat"
     offer     = "RHEL"

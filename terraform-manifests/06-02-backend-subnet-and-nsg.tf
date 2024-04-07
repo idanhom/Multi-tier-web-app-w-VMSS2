@@ -24,7 +24,7 @@ resource "azurerm_network_security_rule" "backend_nsg_rule_inbound" {
   resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.backendsubnet_nsg.name
   name                        = "Rule-Port-80" # "Rule-Port-${each.value}"
-  priority                    = 100 # each.key
+  priority                    = 100            # each.key
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"

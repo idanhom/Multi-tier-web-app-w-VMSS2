@@ -23,8 +23,8 @@ resource "azurerm_network_security_rule" "web_nsg_rule_inbound" {
   #for_each                    = local.web_inbound_ports_map
   resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.websubnet_nsg.name
-  name                        = "Rule-Port-80"# "Rule-Port-${each.value}"
-  priority                    = 100 # each.key
+  name                        = "Rule-Port-80" # "Rule-Port-${each.value}"
+  priority                    = 100            # each.key
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
