@@ -10,7 +10,7 @@ make sure i host the resumé in the container as code, using "azurerm_storage_co
 C:\Users\pson9\Documents\github\terraform-on-azure-cloud\20-Azure-External-and-Internal-LB-with-VMSS
 
 ----------
-
+note: i have already created a repo for creating vmss setup but this is overkill. better to learn azure devops and applying to jobs
 enable vmss autoscaling for web and backend linux vm
 
 ----------
