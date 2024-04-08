@@ -16,7 +16,11 @@ sudo systemctl disable firewalld
 sudo mkdir -p /var/www/html/content
 
 # Create a simple health check endpoint
-echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body><h1>Status: OK</h1></body></html>' | sudo tee /var/www/html/health.html
+echo '<!DOCTYPE html> \
+<html> \
+<head><title>Health Check</title></head> \
+<body><h1>Status: OK</h1></body> \
+</html>' | sudo tee /var/www/html/health.html
 
 # Download the resume PDF into the content directory
 sudo curl -o /var/www/html/content/my_resume.pdf "https://resumeoscar.blob.core.windows.net/resume/resume/Oscar_Pettersson.pdf"

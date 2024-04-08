@@ -6,7 +6,6 @@ resource "azurerm_public_ip" "ag_publicip" {
   sku                 = "Standard"
 }
 
-
 locals {
   probe_path_web         = "/"
   probe_path_backend     = "/health.html"
