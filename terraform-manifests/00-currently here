@@ -1,16 +1,15 @@
 # todo now, 
 
+following this tutorial https://www.udemy.com/course/terraform-on-azure-with-iac-azure-devops-sre-real-world-25-demos/learn/lecture/28187274#overview
+and create a storage for custom-error-pages.
 
-create self-hosted ssh (there is tutorial in 30 or 31 of terraform-on-azure-cloud guide), then also use https in application gateway
-
+also, add my pdf to this code, too
 -----------
 
 
-make sure i host the resumé in the container as code, using "azurerm_storage_container" to upload it... see c10 in #20 on local terraform-on-azure-cloud on windows drive
-C:\Users\pson9\Documents\github\terraform-on-azure-cloud\20-Azure-External-and-Internal-LB-with-VMSS
 
 ----------
-rename "web linuxvm" or "static website" to "frontend", to conform to naming standard
+rename "web linuxvm" or "static website" to "frontend", to conform to naming standard, do it all over... like also in ag
 
 
 

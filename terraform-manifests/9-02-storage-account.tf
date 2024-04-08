@@ -18,7 +18,8 @@ locals {
   pages = ["403.html", "502.html", "index.html", "error.html"]
 }
 
-# check so below content works
+# check so below content works by validateing and deploying it....
+# also,possibly use it with my pdf too... adapt how?
 
 resource "azurerm_storage_blob" "static_container_blob" {
   for_each               = toset(local.pages)
