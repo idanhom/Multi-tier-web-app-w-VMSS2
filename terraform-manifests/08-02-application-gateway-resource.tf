@@ -45,7 +45,7 @@ resource "azurerm_application_gateway" "ag" {
 
   # Added HTTPS frontend port
   frontend_port {
-    name = "${local.resource_name_prefix}-httpslstn"
+    name = "${local.resource_name_prefix}-httpslstn" # NOTE SEEMS TO BE NAMED WRONG? Compared with above "feport"
     port = local.https_port
   }
     
