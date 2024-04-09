@@ -1,11 +1,3 @@
-resource "azurerm_public_ip" "ag_publicip" {
-  name                = "${local.resource_name_prefix}-ag-pip"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
-  allocation_method   = "Static"
-  sku                 = "Standard"
-}
-
 locals {
   probe_path_web         = "/"
   probe_path_backend     = "/health.html"
@@ -19,6 +11,14 @@ locals {
   probe_timeout          = 30
   probe_unhealthy_thresh = 3
   ssl_certificate_name   = "ssl-cert" 
+}
+
+resource "azurerm_public_ip" "ag_publicip" {
+  name                = "${local.resource_name_prefix}-ag-pip"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+  allocation_method   = "Static"
+  sku                 = "Standard"
 }
 
 resource "azurerm_application_gateway" "ag" {
