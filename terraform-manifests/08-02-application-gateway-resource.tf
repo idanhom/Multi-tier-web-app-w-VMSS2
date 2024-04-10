@@ -1,21 +1,24 @@
+locals {
+  probe_path_web         = "/"
+  probe_path_backend     = "/health.html"
+  http_port              = 80
+  https_port             = 443
+  http_protocol          = "Http"
+  https_protocol         = "Https"
+  http_timeout           = 60
+  https_timeout          = 60
+  probe_interval         = 30
+  probe_timeout          = 30
+  probe_unhealthy_thresh = 3
+  ssl_certificate_name   = "ssl-cert" 
+}
+
 resource "azurerm_public_ip" "ag_publicip" {
   name                = "${local.resource_name_prefix}-ag-pip"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   allocation_method   = "Static"
   sku                 = "Standard"
-}
-
-
-locals {
-  probe_path_web         = "/"
-  probe_path_backend     = "/health.html"
-  http_port              = 80
-  http_protocol          = "Http"
-  http_timeout           = 60
-  probe_interval         = 30
-  probe_timeout          = 30
-  probe_unhealthy_thresh = 3
 }
 
 resource "azurerm_application_gateway" "ag" {
@@ -40,18 +43,52 @@ resource "azurerm_application_gateway" "ag" {
     port = local.http_port
   }
 
+  # Added HTTPS frontend port
+  frontend_port {
+    name = "${local.resource_name_prefix}-https-feport"
+    port = local.https_port
+  }
+    
   frontend_ip_configuration {
     name                 = "${local.resource_name_prefix}-feip"
     public_ip_address_id = azurerm_public_ip.ag_publicip.id
   }
 
+
+  ssl_certificate {
+    name     = local.ssl_certificate_name
+    data     = filebase64("${path.module}/ssl-self-signed/httpd.pfx")
+    password = "oscar"
+  }
+
+
   # Listener: HTTP Port 80
   http_listener {
-    name                           = "${local.resource_name_prefix}-httplstn"
+    name                           = "${local.resource_name_prefix}-http-listener"
     frontend_ip_configuration_name = "${local.resource_name_prefix}-feip"
     frontend_port_name             = "${local.resource_name_prefix}-feport"
     protocol                       = local.http_protocol
   }
+
+  # Listener: HTTP Port 443
+  http_listener {
+    name                           = "${local.resource_name_prefix}-https-listener"
+    frontend_ip_configuration_name = "${local.resource_name_prefix}-feip"
+    frontend_port_name             = "${local.resource_name_prefix}-https-feport"
+    protocol                       = local.https_protocol
+    ssl_certificate_name           = local.ssl_certificate_name
+
+    custom_error_configuration {
+      custom_error_page_url = "${azurerm_storage_account.storage_account.primary_web_endpoint}502.html"
+      status_code           = "HttpStatus502"
+    }
+    custom_error_configuration {
+      custom_error_page_url = "${azurerm_storage_account.storage_account.primary_web_endpoint}403.html"
+      status_code           = "HttpStatus403"
+    }    
+  }
+
+
 
   # Backend HTTP Settings for Static Web VM
   backend_http_settings {
@@ -105,6 +142,30 @@ resource "azurerm_application_gateway" "ag" {
     ip_addresses = [azurerm_network_interface.backend_linuxvm_nic.private_ip_address]
   }
 
+
+
+
+
+  # Redirect Configuration for HTTP to HTTPS
+  redirect_configuration {
+    name                 = "${local.resource_name_prefix}-http-to-https"
+    redirect_type        = "Permanent"
+    target_listener_name = "${local.resource_name_prefix}-https-listener"
+    include_path         = true
+    include_query_string = true
+  }
+
+
+  # Modify the existing HTTP Routing Rule for redirection
+  request_routing_rule {
+    name                        = "${local.resource_name_prefix}-http-to-https-rule"
+    rule_type                   = "Basic"
+    priority                    = 100
+    http_listener_name          = "${local.resource_name_prefix}-http-listener"
+    redirect_configuration_name = "${local.resource_name_prefix}-http-to-https"
+  }
+
+
   # URL Path Map for Routing
   url_path_map {
     name                               = "${local.resource_name_prefix}-upm"
@@ -121,10 +182,13 @@ resource "azurerm_application_gateway" "ag" {
 
   # Request Routing Rule
   request_routing_rule {
-    name               = "${local.resource_name_prefix}-rqrt"
+    name               = "${local.resource_name_prefix}-https-path-based-rule"
     rule_type          = "PathBasedRouting"
-    priority           = 100
-    http_listener_name = "${local.resource_name_prefix}-httplstn"
+    priority           = 110
+    http_listener_name = "${local.resource_name_prefix}-https-listener"
     url_path_map_name  = "${local.resource_name_prefix}-upm"
   }
+
+
+
 }
