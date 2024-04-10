@@ -45,7 +45,7 @@ resource "azurerm_application_gateway" "ag" {
 
   # Added HTTPS frontend port
   frontend_port {
-    name = "${local.resource_name_prefix}-httpslstn" # NOTE SEEMS TO BE NAMED WRONG? Compared with above "feport"
+    name = "${local.resource_name_prefix}-https-feport"
     port = local.https_port
   }
     
@@ -64,7 +64,7 @@ resource "azurerm_application_gateway" "ag" {
 
   # Listener: HTTP Port 80
   http_listener {
-    name                           = "${local.resource_name_prefix}-httplstn"
+    name                           = "${local.resource_name_prefix}-http-listener"
     frontend_ip_configuration_name = "${local.resource_name_prefix}-feip"
     frontend_port_name             = "${local.resource_name_prefix}-feport"
     protocol                       = local.http_protocol
@@ -72,14 +72,12 @@ resource "azurerm_application_gateway" "ag" {
 
   # Listener: HTTP Port 443
   http_listener {
-    name                           = "${local.resource_name_prefix}-httpslstn"
+    name                           = "${local.resource_name_prefix}-https-listener"
     frontend_ip_configuration_name = "${local.resource_name_prefix}-feip"
-    frontend_port_name             = "${local.resource_name_prefix}-httpslstn"
+    frontend_port_name             = "${local.resource_name_prefix}-https-feport"
     protocol                       = local.https_protocol
     ssl_certificate_name           = local.ssl_certificate_name
 
-
-    #Not modified to my config
     custom_error_configuration {
       custom_error_page_url = "${azurerm_storage_account.storage_account.primary_web_endpoint}502.html"
       status_code           = "HttpStatus502"
@@ -88,8 +86,6 @@ resource "azurerm_application_gateway" "ag" {
       custom_error_page_url = "${azurerm_storage_account.storage_account.primary_web_endpoint}403.html"
       status_code           = "HttpStatus403"
     }    
-
-
   }
 
 
@@ -154,7 +150,7 @@ resource "azurerm_application_gateway" "ag" {
   redirect_configuration {
     name                 = "${local.resource_name_prefix}-http-to-https"
     redirect_type        = "Permanent"
-    target_listener_name = "${local.resource_name_prefix}-httpslstn"
+    target_listener_name = "${local.resource_name_prefix}-https-listener"
     include_path         = true
     include_query_string = true
   }
@@ -165,7 +161,7 @@ resource "azurerm_application_gateway" "ag" {
     name                        = "${local.resource_name_prefix}-http-to-https-rule"
     rule_type                   = "Basic"
     priority                    = 100
-    http_listener_name          = "${local.resource_name_prefix}-httplstn"
+    http_listener_name          = "${local.resource_name_prefix}-http-listener"
     redirect_configuration_name = "${local.resource_name_prefix}-http-to-https"
   }
 
@@ -189,7 +185,7 @@ resource "azurerm_application_gateway" "ag" {
     name               = "${local.resource_name_prefix}-https-path-based-rule"
     rule_type          = "PathBasedRouting"
     priority           = 110
-    http_listener_name = "${local.resource_name_prefix}-httpslstn"
+    http_listener_name = "${local.resource_name_prefix}-https-listener"
     url_path_map_name  = "${local.resource_name_prefix}-upm"
   }
 
