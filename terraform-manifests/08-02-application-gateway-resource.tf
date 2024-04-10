@@ -10,7 +10,7 @@ locals {
   probe_interval         = 30
   probe_timeout          = 30
   probe_unhealthy_thresh = 3
-  ssl_certificate_name   = "ssl-cert" 
+  ssl_certificate_name   = "ssl-cert"
 }
 
 resource "azurerm_public_ip" "ag_publicip" {
@@ -48,7 +48,7 @@ resource "azurerm_application_gateway" "ag" {
     name = "${local.resource_name_prefix}-https-feport"
     port = local.https_port
   }
-    
+
   frontend_ip_configuration {
     name                 = "${local.resource_name_prefix}-feip"
     public_ip_address_id = azurerm_public_ip.ag_publicip.id
@@ -85,7 +85,7 @@ resource "azurerm_application_gateway" "ag" {
     custom_error_configuration {
       custom_error_page_url = "${azurerm_storage_account.storage_account.primary_web_endpoint}403.html"
       status_code           = "HttpStatus403"
-    }    
+    }
   }
 
 

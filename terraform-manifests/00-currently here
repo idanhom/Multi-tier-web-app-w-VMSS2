@@ -1,28 +1,12 @@
 # todo now, 
 
-first, fix naming convention for AG (and locals-block)
-then, 
-
-
-
-
-
-
---------
-following this tutorial https://www.udemy.com/course/terraform-on-azure-with-iac-azure-devops-sre-real-world-25-demos/learn/lecture/28187274#overview
-and create a storage for custom-error-pages.
-
-also, add my pdf to this code, too
------------
-
-
-
 ----------
 rename "web linuxvm" or "static website" to "frontend", to conform to naming standard, do it all over... like also in ag
-
+---------
 in ag, fix so locals are used more consistently
-
-
+----------
+fix error messages, so 404 etc exist, and 502 etc works
+----------
 
 note: i have already created a repo for creating vmss setup but this is overkill. better to learn azure devops and applying to jobs
 enable vmss autoscaling for web and backend linux vm
