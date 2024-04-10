@@ -12,5 +12,3 @@ note: i have already created a repo for creating vmss setup but this is overkill
 enable vmss autoscaling for web and backend linux vm
 
 ----------
-
-created new branch
